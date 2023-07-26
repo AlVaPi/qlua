@@ -1,60 +1,60 @@
 -- nick-h@yandex.ru
--- Glukk Inc ©
+-- Glukk Inc В©
 
 local w32 = require("w32")
 
---CLASS_CODE        = '' --класс в файле настроек
-CLASS_CODE        = "TQBR"              -- Код класса
---CLASS_CODE        = 'SPBFUT'             -- Код класса
+--CLASS_CODE        = '' --РєР»Р°СЃСЃ РІ С„Р°Р№Р»Рµ РЅР°СЃС‚СЂРѕРµРє
+CLASS_CODE        = "TQBR"              -- РљРѕРґ РєР»Р°СЃСЃР°
+--CLASS_CODE        = 'SPBFUT'             -- РљРѕРґ РєР»Р°СЃСЃР°
 --CLASS_CODE        = 'QJSIM'
-SEC_CODE = '' -- бумаги в файле настроек
+SEC_CODE = '' -- Р±СѓРјР°РіРё РІ С„Р°Р№Р»Рµ РЅР°СЃС‚СЂРѕРµРє
 SEC_CODES = {}
 
-INTERVAL = 15 -- --текущий интервал
+INTERVAL = 15 -- --С‚РµРєСѓС‰РёР№ РёРЅС‚РµСЂРІР°Р»
 
-START_TIME                    = '10:00:00'               -- Начало торговли
-STOP_TIME                     = '18:50:00'               -- Окончание торговли
+START_TIME                    = '10:00:00'               -- РќР°С‡Р°Р»Рѕ С‚РѕСЂРіРѕРІР»Рё
+STOP_TIME                     = '18:50:00'               -- РћРєРѕРЅС‡Р°РЅРёРµ С‚РѕСЂРіРѕРІР»Рё
 
-PocketPopAll = false -- доставать все транзакции из кармана транзакций
-PocketPopAll_time = '10:00:05' -- время когда надо выполнить все транзакции из кармана транзакций
+PocketPopAll = false -- РґРѕСЃС‚Р°РІР°С‚СЊ РІСЃРµ С‚СЂР°РЅР·Р°РєС†РёРё РёР· РєР°СЂРјР°РЅР° С‚СЂР°РЅР·Р°РєС†РёР№
+PocketPopAll_time = '10:00:05' -- РІСЂРµРјСЏ РєРѕРіРґР° РЅР°РґРѕ РІС‹РїРѕР»РЅРёС‚СЊ РІСЃРµ С‚СЂР°РЅР·Р°РєС†РёРё РёР· РєР°СЂРјР°РЅР° С‚СЂР°РЅР·Р°РєС†РёР№
 isPocketPopAll_done = false
 --------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------
 
---/*РАБОЧИЕ ПЕРЕМЕННЫЕ РОБОТА (менять не нужно)*/
-isRun = true -- Флаг поддержания работы скрипта
+--/*Р РђР‘РћР§РР• РџР•Р Р•РњР•РќРќР«Р• Р РћР‘РћРўРђ (РјРµРЅСЏС‚СЊ РЅРµ РЅСѓР¶РЅРѕ)*/
+isRun = true -- Р¤Р»Р°Рі РїРѕРґРґРµСЂР¶Р°РЅРёСЏ СЂР°Р±РѕС‚С‹ СЃРєСЂРёРїС‚Р°
 is_Connected = 0
 PrevDayNumber                 = 0
 
-trans_id          = os.time()            -- Задает начальный номер ID транзакций
-trans_Status      = nil                  -- Статус текущей транзакции из функции OnTransPeply
-trans_result_msg  = ''                   -- Сообщение по текущей транзакции из функции OnTransPeply
-numberOfFixedColumns = 0                 -- Число фиксированных колонок до периодов
-numberOfVisibleColumns = 0               -- Число видимых колонок периодов
-tableIndex = {}                          -- Индексы колонок созданной таблицы
+trans_id          = os.time()            -- Р—Р°РґР°РµС‚ РЅР°С‡Р°Р»СЊРЅС‹Р№ РЅРѕРјРµСЂ ID С‚СЂР°РЅР·Р°РєС†РёР№
+trans_Status      = nil                  -- РЎС‚Р°С‚СѓСЃ С‚РµРєСѓС‰РµР№ С‚СЂР°РЅР·Р°РєС†РёРё РёР· С„СѓРЅРєС†РёРё OnTransPeply
+trans_result_msg  = ''                   -- РЎРѕРѕР±С‰РµРЅРёРµ РїРѕ С‚РµРєСѓС‰РµР№ С‚СЂР°РЅР·Р°РєС†РёРё РёР· С„СѓРЅРєС†РёРё OnTransPeply
+numberOfFixedColumns = 0                 -- Р§РёСЃР»Рѕ С„РёРєСЃРёСЂРѕРІР°РЅРЅС‹С… РєРѕР»РѕРЅРѕРє РґРѕ РїРµСЂРёРѕРґРѕРІ
+numberOfVisibleColumns = 0               -- Р§РёСЃР»Рѕ РІРёРґРёРјС‹С… РєРѕР»РѕРЅРѕРє РїРµСЂРёРѕРґРѕРІ
+tableIndex = {}                          -- РРЅРґРµРєСЃС‹ РєРѕР»РѕРЅРѕРє СЃРѕР·РґР°РЅРЅРѕР№ С‚Р°Р±Р»РёС†С‹
 openedDS = {}
 
 t_id = nil
 tv_id = nil
 thist_id = nil
 
-SeaGreen=12713921		--	RGB(193, 255, 193) нежно-зеленый
-RosyBrown=12698111	--	RGB(255, 193, 193) нежно-розовый
+SeaGreen=12713921		--	RGB(193, 255, 193) РЅРµР¶РЅРѕ-Р·РµР»РµРЅС‹Р№
+RosyBrown=12698111	--	RGB(255, 193, 193) РЅРµР¶РЅРѕ-СЂРѕР·РѕРІС‹Р№
 
 
-SEC_PRICE_STEP    = 0                    -- ШАГ ЦЕНЫ ИНСТРУМЕНТА
-DS                = nil                  -- Источник данных графика (DataSource)
-g_previous_time   = os.time() -- помещение в переменную времени сервера в формате HHMMSS
+SEC_PRICE_STEP    = 0                    -- РЁРђР“ Р¦Р•РќР« РРќРЎРўР РЈРњР•РќРўРђ
+DS                = nil                  -- РСЃС‚РѕС‡РЅРёРє РґР°РЅРЅС‹С… РіСЂР°С„РёРєР° (DataSource)
+g_previous_time   = os.time() -- РїРѕРјРµС‰РµРЅРёРµ РІ РїРµСЂРµРјРµРЅРЅСѓСЋ РІСЂРµРјРµРЅРё СЃРµСЂРІРµСЂР° РІ С„РѕСЂРјР°С‚Рµ HHMMSS
 
 SEC_CODE_INDEX = {} -- last interval index
 
-isDayInterval = false -- есть дневной интервал
+isDayInterval = false -- РµСЃС‚СЊ РґРЅРµРІРЅРѕР№ РёРЅС‚РµСЂРІР°Р»
 dayIntervalIndex = nil
-UpdateDataSecQty = 10   -- Количество секунд ожидания подгрузки данных с сервера после возобновления подключения
+UpdateDataSecQty = 10   -- РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРµРєСѓРЅРґ РѕР¶РёРґР°РЅРёСЏ РїРѕРґРіСЂСѓР·РєРё РґР°РЅРЅС‹С… СЃ СЃРµСЂРІРµСЂР° РїРѕСЃР»Рµ РІРѕР·РѕР±РЅРѕРІР»РµРЅРёСЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ
 
 
  -----------------------------
- -- Основные функции --
+ -- РћСЃРЅРѕРІРЅС‹Рµ С„СѓРЅРєС†РёРё --
  -----------------------------
 function DataSource(i,cell)
     local seccode = SEC_CODES['sec_codes'][i]
@@ -66,9 +66,9 @@ function DataSource(i,cell)
     end
     local ds = CreateDataSource(classcode,seccode,interval)
     if ds == nil then
-        message('NRTR monitor: ОШИБКА получения доступа к свечам! '..Error)
-        myLog('NRTR monitor: ОШИБКА получения доступа к свечам! '..Error)
-        -- Завершает выполнение скрипта
+        message('NRTR monitor: РћРЁРР‘РљРђ РїРѕР»СѓС‡РµРЅРёСЏ РґРѕСЃС‚СѓРїР° Рє СЃРІРµС‡Р°Рј! '..Error)
+        myLog('NRTR monitor: РћРЁРР‘РљРђ РїРѕР»СѓС‡РµРЅРёСЏ РґРѕСЃС‚СѓРїР° Рє СЃРІРµС‡Р°Рј! '..Error)
+        -- Р—Р°РІРµСЂС€Р°РµС‚ РІС‹РїРѕР»РЅРµРЅРёРµ СЃРєСЂРёРїС‚Р°
         isRun = false
         return
     end
@@ -80,25 +80,25 @@ function DataSource(i,cell)
     return ds
 end
 
-do---- ДАТА/ВРЕМЯ
+do---- Р”РђРўРђ/Р’Р Р•РњРЇ
 
-    -- Ждет подключения к серверу, после чего ждет еще UpdateDataSecQty секунд подгрузки пропущенных данных с сервера
+    -- Р–РґРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ, РїРѕСЃР»Рµ С‡РµРіРѕ Р¶РґРµС‚ РµС‰Рµ UpdateDataSecQty СЃРµРєСѓРЅРґ РїРѕРґРіСЂСѓР·РєРё РїСЂРѕРїСѓС‰РµРЅРЅС‹С… РґР°РЅРЅС‹С… СЃ СЃРµСЂРІРµСЂР°
     function WaitUpdateDataAfterReconnect()
        while isRun and isConnected() == 0 do sleep(100) end
        if isRun then sleep(UpdateDataSecQty * 1000) end
-       -- Повторяет операцию если соединение снова оказалось разорвано
+       -- РџРѕРІС‚РѕСЂСЏРµС‚ РѕРїРµСЂР°С†РёСЋ РµСЃР»Рё СЃРѕРµРґРёРЅРµРЅРёРµ СЃРЅРѕРІР° РѕРєР°Р·Р°Р»РѕСЃСЊ СЂР°Р·РѕСЂРІР°РЅРѕ
        if isRun and isConnected() == 0 then WaitUpdateDataAfterReconnect() end
     end
 
-    -- Возвращает текущую дату/время сервера в виде таблицы datetime
+    -- Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰СѓСЋ РґР°С‚Сѓ/РІСЂРµРјСЏ СЃРµСЂРІРµСЂР° РІ РІРёРґРµ С‚Р°Р±Р»РёС†С‹ datetime
     function GetServerDateTime()
 
         local dt = {}
 
-       -- Пытается получить дату/время сервера
+       -- РџС‹С‚Р°РµС‚СЃСЏ РїРѕР»СѓС‡РёС‚СЊ РґР°С‚Сѓ/РІСЂРµРјСЏ СЃРµСЂРІРµСЂР°
        while isRun and dt.day == nil do
           dt.day,dt.month,dt.year,dt.hour,dt.min,dt.sec = string.match(getInfoParam('TRADEDATE')..' '..getInfoParam('SERVERTIME'),"(%d*).(%d*).(%d*) (%d*):(%d*):(%d*)")
-          -- Если не удалось получить, или разрыв связи, ждет подключения и подгрузки с сервера актуальных данных
+          -- Р•СЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ, РёР»Рё СЂР°Р·СЂС‹РІ СЃРІСЏР·Рё, Р¶РґРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рё РїРѕРґРіСЂСѓР·РєРё СЃ СЃРµСЂРІРµСЂР° Р°РєС‚СѓР°Р»СЊРЅС‹С… РґР°РЅРЅС‹С…
           --if dt.day == nil or isConnected() == 0 then WaitUpdateDataAfterReconnect() end
           if dt.day == nil or isConnected() == 0 then
                 return os.date('*t', os.time())
@@ -106,17 +106,17 @@ do---- ДАТА/ВРЕМЯ
            end
        end
 
-       -- Если во время ожидания скрипт был остановлен пользователем, возвращает таблицу datetime даты/времени компьютера, чтобы не вернуть пустую таблицу и не вызвать ошибку в алгоритме
+       -- Р•СЃР»Рё РІРѕ РІСЂРµРјСЏ РѕР¶РёРґР°РЅРёСЏ СЃРєСЂРёРїС‚ Р±С‹Р» РѕСЃС‚Р°РЅРѕРІР»РµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј, РІРѕР·РІСЂР°С‰Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ datetime РґР°С‚С‹/РІСЂРµРјРµРЅРё РєРѕРјРїСЊСЋС‚РµСЂР°, С‡С‚РѕР±С‹ РЅРµ РІРµСЂРЅСѓС‚СЊ РїСѓСЃС‚СѓСЋ С‚Р°Р±Р»РёС†Сѓ Рё РЅРµ РІС‹Р·РІР°С‚СЊ РѕС€РёР±РєСѓ РІ Р°Р»РіРѕСЂРёС‚РјРµ
        if not isRun then return os.date('*t', os.time()) end
 
-       -- Приводит полученные значения к типу number
+       -- РџСЂРёРІРѕРґРёС‚ РїРѕР»СѓС‡РµРЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ Рє С‚РёРїСѓ number
        for key,value in pairs(dt) do dt[key] = tonumber(value) end
 
-       -- Возвращает итоговую таблицу
+       -- Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РѕРіРѕРІСѓСЋ С‚Р°Р±Р»РёС†Сѓ
        return dt
     end
 
-    -- Приводит время из строкового формата ЧЧ:ММ:CC к формату datetime
+    -- РџСЂРёРІРѕРґРёС‚ РІСЂРµРјСЏ РёР· СЃС‚СЂРѕРєРѕРІРѕРіРѕ С„РѕСЂРјР°С‚Р° Р§Р§:РњРњ:CC Рє С„РѕСЂРјР°С‚Сѓ datetime
     function StrToTime(str_time)
         if type(str_time) ~= 'string' then return os.date('*t') end
         local sdt = GetServerDateTime()
@@ -130,28 +130,28 @@ do---- ДАТА/ВРЕМЯ
         return dt
     end
 
-end--- ДАТА/ВРЕМЯ
+end--- Р”РђРўРђ/Р’Р Р•РњРЇ
 
- -- Функция первичной инициализации скрипта (ВЫЗЫВАЕТСЯ ТЕРМИНАЛОМ QUIK в самом начале)
+ -- Р¤СѓРЅРєС†РёСЏ РїРµСЂРІРёС‡РЅРѕР№ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё СЃРєСЂРёРїС‚Р° (Р’Р«Р—Р«Р’РђР•РўРЎРЇ РўР•Р РњРРќРђР›РћРњ QUIK РІ СЃР°РјРѕРј РЅР°С‡Р°Р»Рµ)
 function OnInit()
 
-    dofile (getScriptPath().."\\monitorStepNRTR.lua") --stepNRTR алгоритм. Инициализация - initstepNRTR, расчет - stepNRTR
-    dofile (getScriptPath().."\\monitorEMA.lua") --EMA алгоритм. Инициализация - initEMA, расчет - EMA, allEMA
-    dofile (getScriptPath().."\\monitorRSI.lua") --EMA алгоритм. Инициализация - initRSI, расчет - RSI
-    dofile (getScriptPath().."\\monitorReg.lua") --Регрессия алгоритм. Инициализация - initReg, расчет - Reg
-    dofile (getScriptPath().."\\monitorVolume.lua") --RT алгоритм контроль повышенного объема. Инициализация - initVolume, расчет - Volume
-    dofile (getScriptPath().."\\monitorVSA.lua") --VSA алгоритм. Инициализация - initVSA, расчет - VSA
+    dofile (getScriptPath().."\\monitorStepNRTR.lua") --stepNRTR Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initstepNRTR, СЂР°СЃС‡РµС‚ - stepNRTR
+    dofile (getScriptPath().."\\monitorEMA.lua") --EMA Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initEMA, СЂР°СЃС‡РµС‚ - EMA, allEMA
+    dofile (getScriptPath().."\\monitorRSI.lua") --EMA Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initRSI, СЂР°СЃС‡РµС‚ - RSI
+    dofile (getScriptPath().."\\monitorReg.lua") --Р РµРіСЂРµСЃСЃРёСЏ Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initReg, СЂР°СЃС‡РµС‚ - Reg
+    dofile (getScriptPath().."\\monitorVolume.lua") --RT Р°Р»РіРѕСЂРёС‚Рј РєРѕРЅС‚СЂРѕР»СЊ РїРѕРІС‹С€РµРЅРЅРѕРіРѕ РѕР±СЉРµРјР°. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initVolume, СЂР°СЃС‡РµС‚ - Volume
+    dofile (getScriptPath().."\\monitorVSA.lua") --VSA Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initVSA, СЂР°СЃС‡РµС‚ - VSA
     dofile (getScriptPath().."\\monitorRange.lua") --range
 
-    --Должен быть ниже модулей расчета
-    dofile (getScriptPath().."\\scriptMonitorPar.lua") --stepNRTR алгоритм. Инициализация - initstepNRTR, расчет - stepNRTR
+    --Р”РѕР»Р¶РµРЅ Р±С‹С‚СЊ РЅРёР¶Рµ РјРѕРґСѓР»РµР№ СЂР°СЃС‡РµС‚Р°
+    dofile (getScriptPath().."\\scriptMonitorPar.lua") --stepNRTR Р°Р»РіРѕСЂРёС‚Рј. РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ - initstepNRTR, СЂР°СЃС‡РµС‚ - stepNRTR
 
-    logFile = io.open(FILE_LOG_NAME, "a+") -- открывает файл
+    logFile = io.open(FILE_LOG_NAME, "a+") -- РѕС‚РєСЂС‹РІР°РµС‚ С„Р°Р№Р»
 
     local ParamsFile = io.open(PARAMS_FILE_NAME,"r")
     if ParamsFile == nil then
         isRun = false
-        message("Не удалость прочитать файл настроек!!!")
+        message("РќРµ СѓРґР°Р»РѕСЃС‚СЊ РїСЂРѕС‡РёС‚Р°С‚СЊ С„Р°Р№Р» РЅР°СЃС‚СЂРѕРµРє!!!")
         return false
     end
 
@@ -159,28 +159,28 @@ function OnInit()
     --
     --if is_Connected ~= 1 then
     --    isRun = false
-    --    message("Нет подключения к серверу!!!")
+    --    message("РќРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ!!!")
     --    return false
     --end
 
     SEC_CODES['class_codes'] =              {} -- CLASS_CODE
-    SEC_CODES['names'] =                    {} -- имена бумаг
-    SEC_CODES['sec_codes'] =                {} -- коды бумаг
-    SEC_CODES['isMessage'] =                {} -- выводить сообщения
-    SEC_CODES['isPlaySound'] =              {} -- проигрывать звук
-    SEC_CODES['volume'] =                   {} -- рабочий объем
-    SEC_CODES['isEmpty'] =                  {} -- признак заказа данных
-    SEC_CODES['DS'] =                       {} -- данные по инструменту
-    SEC_CODES['calcAlgoValues'] =           {} -- рассчитанные данные
-    SEC_CODES['dayATR'] =                   {} -- рассчитанные данные ATR
-    SEC_CODES['dayDS'] =                    {} -- данные для ATR
-    SEC_CODES['dayATR_Period'] =            {} -- период данных ATR
-    SEC_CODES['D_minus5'] =                 {} -- цена 5 дней назад
-    SEC_CODES['lastTimeCalculated'] =       {} -- время последнего рассчета
-    SEC_CODES['lastrealTimeCalculated'] =   {} -- время последнего рассчета realtime алгоритма
+    SEC_CODES['names'] =                    {} -- РёРјРµРЅР° Р±СѓРјР°Рі
+    SEC_CODES['sec_codes'] =                {} -- РєРѕРґС‹ Р±СѓРјР°Рі
+    SEC_CODES['isMessage'] =                {} -- РІС‹РІРѕРґРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ
+    SEC_CODES['isPlaySound'] =              {} -- РїСЂРѕРёРіСЂС‹РІР°С‚СЊ Р·РІСѓРє
+    SEC_CODES['volume'] =                   {} -- СЂР°Р±РѕС‡РёР№ РѕР±СЉРµРј
+    SEC_CODES['isEmpty'] =                  {} -- РїСЂРёР·РЅР°Рє Р·Р°РєР°Р·Р° РґР°РЅРЅС‹С…
+    SEC_CODES['DS'] =                       {} -- РґР°РЅРЅС‹Рµ РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ
+    SEC_CODES['calcAlgoValues'] =           {} -- СЂР°СЃСЃС‡РёС‚Р°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ
+    SEC_CODES['dayATR'] =                   {} -- СЂР°СЃСЃС‡РёС‚Р°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ ATR
+    SEC_CODES['dayDS'] =                    {} -- РґР°РЅРЅС‹Рµ РґР»СЏ ATR
+    SEC_CODES['dayATR_Period'] =            {} -- РїРµСЂРёРѕРґ РґР°РЅРЅС‹С… ATR
+    SEC_CODES['D_minus5'] =                 {} -- С†РµРЅР° 5 РґРЅРµР№ РЅР°Р·Р°Рґ
+    SEC_CODES['lastTimeCalculated'] =       {} -- РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂР°СЃСЃС‡РµС‚Р°
+    SEC_CODES['lastrealTimeCalculated'] =   {} -- РІСЂРµРјСЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂР°СЃСЃС‡РµС‚Р° realtime Р°Р»РіРѕСЂРёС‚РјР°
 
     myLog("______________________________________________________")
-    myLog("Читаем файл параметров")
+    myLog("Р§РёС‚Р°РµРј С„Р°Р№Р» РїР°СЂР°РјРµС‚СЂРѕРІ")
 	
 	local sec_list = getClassSecurities(CLASS_CODE)
 	local lineCount = 1
@@ -208,7 +208,7 @@ function OnInit()
     
     myLog("Intervals "..tostring(#INTERVALS["names"]))
     myLog("Sec codes "..tostring(#SEC_CODES['sec_codes']))
-    CreateTable() -- Создает таблицу
+    CreateTable() -- РЎРѕР·РґР°РµС‚ С‚Р°Р±Р»РёС†Сѓ
 
     myLog("realTime functions "..tostring(#realtimeAlgorithms["functions"]))
 
@@ -221,8 +221,8 @@ function OnInit()
 
         if getSecurityInfo(CLASS_CODE, SEC_CODE) == nil then
             isRun = false
-            message("Не удалость получить данные по инструменту: "..SEC_CODE.."/"..tostring(CLASS_CODE))
-            myLog("Не удалость получить данные по инструменту: "..SEC_CODE.."/"..tostring(CLASS_CODE))
+            message("РќРµ СѓРґР°Р»РѕСЃС‚СЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ: "..SEC_CODE.."/"..tostring(CLASS_CODE))
+            myLog("РќРµ СѓРґР°Р»РѕСЃС‚СЊ РїРѕР»СѓС‡РёС‚СЊ РґР°РЅРЅС‹Рµ РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ: "..SEC_CODE.."/"..tostring(CLASS_CODE))
             return false
         end
 
@@ -233,44 +233,44 @@ function OnInit()
         if last_price == 0 or last_price == nil then
             last_price = open_price
         end	
---	    SetCell(t_id, i, tableIndex["Цена открытия"], tostring(open_price), open_price)  --i строка, 1 - колонка, v - значение	
-        SetCell(t_id, i, tableIndex["Текущая цена"], tostring(last_price), last_price)  --i строка, 1 - колонка, v - значение	
+--	    SetCell(t_id, i, tableIndex["Р¦РµРЅР° РѕС‚РєСЂС‹С‚РёСЏ"], tostring(open_price), open_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ	
+        SetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"], tostring(last_price), last_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ	
 		
         local highest_price = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"high").param_value)
         local lowest_price = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"low").param_value)
 		
         local waprice = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"WAPRICE").param_value)
-        SetCell(t_id, i, tableIndex["VWAP"], tostring(waprice), wapprice)  --i строка, 1 - колонка, v - значение
+        SetCell(t_id, i, tableIndex["VWAP"], tostring(waprice), wapprice)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
 
         local lastchange = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"lastchange").param_value)
-        Str(i, tableIndex["%"], lastchange, 0, 0)  --i строка, 1 - колонка, v - значение
+        Str(i, tableIndex["%"], lastchange, 0, 0)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
 
 
 --        local delta = round(last_price-open_price,5)
---        SetCell(t_id, i, tableIndex["Дельта"], tostring(delta), delta)  --i строка, 1 - колонка, v - значение
+--        SetCell(t_id, i, tableIndex["Р”РµР»СЊС‚Р°"], tostring(delta), delta)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         local openCount, awg_price = GetTotalnet(CLASS_CODE, SEC_CODE)
-        SetCell(t_id, i, tableIndex["Позиция"], tostring(openCount), openCount)  --i строка, 1 - колонка, v - значение
+        SetCell(t_id, i, tableIndex["РџРѕР·РёС†РёСЏ"], tostring(openCount), openCount)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         if tonumber(awg_price)==0 then
-            SetCell(t_id, i, tableIndex["Средняя"], '', 0)  --i строка, 1 - колонка, v - значение
-            White(i, tableIndex["Средняя"])
+            SetCell(t_id, i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], '', 0)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            White(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"])
         else
-            Str(i, tableIndex["Средняя"], tonumber(awg_price), last_price)  --i строка, 1 - колонка, v - значение
+            Str(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], tonumber(awg_price), last_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         end
-        --Команды
+        --РљРѕРјР°РЅРґС‹
         if showTradeCommands == true then
-            SetCell(t_id, i,  tableIndex["<"], "-")  --i строка, 1 - колонка, v - значение
-            SetCell(t_id, i, tableIndex["Объем сделки"], tostring(SEC_CODES['volume'][i]), SEC_CODES['volume'][i])  --i строка, 1 - колонка, v - значение
-            SetCell(t_id, i, tableIndex[">"], "+")  --i строка, 1 - колонка, v - значение
-            SetCell(t_id, i, tableIndex["Команда BUY"], "BUY")  --i строка, 1 - колонка, v - значение
-            Green(i, tableIndex["Команда BUY"])
-            SetCell(t_id, i, tableIndex["Команда SELL"], "SELL")  --i строка, 1 - колонка, v - значение
-            Red(i, tableIndex["Команда SELL"])
+            SetCell(t_id, i,  tableIndex["<"], "-")  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            SetCell(t_id, i, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"], tostring(SEC_CODES['volume'][i]), SEC_CODES['volume'][i])  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            SetCell(t_id, i, tableIndex[">"], "+")  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° BUY"], "BUY")  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            Green(i, tableIndex["РљРѕРјР°РЅРґР° BUY"])
+            SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° SELL"], "SELL")  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+            Red(i, tableIndex["РљРѕРјР°РЅРґР° SELL"])
             if openCount~=0 then
-                Red(i, tableIndex["Команда CLOSE"])
-                SetCell(t_id, i, tableIndex["Команда CLOSE"], "CLOSE")  --i строка, 0 - колонка, v - значение
+                Red(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "CLOSE")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             else
-                White(i, tableIndex["Команда CLOSE"])
-                SetCell(t_id, i, tableIndex["Команда CLOSE"], "")  --i строка, 0 - колонка, v - значение
+                White(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             end
         end
 
@@ -291,7 +291,7 @@ function OnInit()
             SEC_CODES['lastTimeCalculated'][i][cell] = os.time()
 
             SEC_CODE_INDEX[i][cell] = DS:Size()
-            --myLog("Всего свечей ".. SEC_CODE..", интервала "..INTERVALS["names"][cell].." "..tostring(SEC_CODE_INDEX[i][cell]))
+            --myLog("Р’СЃРµРіРѕ СЃРІРµС‡РµР№ ".. SEC_CODE..", РёРЅС‚РµСЂРІР°Р»Р° "..INTERVALS["names"][cell].." "..tostring(SEC_CODE_INDEX[i][cell]))
 
             if status ~= nil and status ~= 0 then
                 --interval algorithms
@@ -305,7 +305,7 @@ function OnInit()
                     initf()
                 end
                 if calcf~=nil then
-                    -- расчет параметров для каждого интервала
+                    -- СЂР°СЃС‡РµС‚ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ РєР°Р¶РґРѕРіРѕ РёРЅС‚РµСЂРІР°Р»Р°
                     calcAlgoValue = calcf(i, DS:Size(), settings, DS, INTERVAL)
                 end
 
@@ -352,33 +352,33 @@ function OnInit()
 
 end
 
-function main() -- Функция, реализующая основной поток выполнения в скрипте
+function main() -- Р¤СѓРЅРєС†РёСЏ, СЂРµР°Р»РёР·СѓСЋС‰Р°СЏ РѕСЃРЅРѕРІРЅРѕР№ РїРѕС‚РѕРє РІС‹РїРѕР»РЅРµРЅРёСЏ РІ СЃРєСЂРёРїС‚Рµ
 
     SetTableNotificationCallback(t_id, event_callback)
     SetTableNotificationCallback(tv_id, volume_event_callback)
 
-    -- Цикл по дням
+    -- Р¦РёРєР» РїРѕ РґРЅСЏРј
     while isRun do
-        -- Ждет начала следующего дня
+        -- Р–РґРµС‚ РЅР°С‡Р°Р»Р° СЃР»РµРґСѓСЋС‰РµРіРѕ РґРЅСЏ
         while isRun and GetServerDateTime().day == PrevDayNumber do sleep(100) end
 
-        -- Получает время в секундах для всех временных промежутков
+        -- РџРѕР»СѓС‡Р°РµС‚ РІСЂРµРјСЏ РІ СЃРµРєСѓРЅРґР°С… РґР»СЏ РІСЃРµС… РІСЂРµРјРµРЅРЅС‹С… РїСЂРѕРјРµР¶СѓС‚РєРѕРІ
         local StartTime_sec = os.time(StrToTime(START_TIME))
         local StopTime_sec = os.time(StrToTime(STOP_TIME))
 
-        -- Ждет начала торгового дня
+        -- Р–РґРµС‚ РЅР°С‡Р°Р»Р° С‚РѕСЂРіРѕРІРѕРіРѕ РґРЅСЏ
         while isRun and os.time(GetServerDateTime()) <= StartTime_sec do sleep(100) end
 
         --myLog(' GetServerDateTime() '..tostring(os.time(GetServerDateTime()))..' StartTime_sec '..tostring(StartTime_sec)..' StopTime_sec '..tostring(StopTime_sec))
 
-        -- Цикл внутри дня
-        while isRun do -- Цикл будет выполнятся, пока isRun == true
+        -- Р¦РёРєР» РІРЅСѓС‚СЂРё РґРЅСЏ
+        while isRun do -- Р¦РёРєР» Р±СѓРґРµС‚ РІС‹РїРѕР»РЅСЏС‚СЃСЏ, РїРѕРєР° isRun == true
 
-            -- Получает время сервера
+            -- РџРѕР»СѓС‡Р°РµС‚ РІСЂРµРјСЏ СЃРµСЂРІРµСЂР°
             local ServerDT = GetServerDateTime()
             local ServerDT_sec = os.time(ServerDT)
 
-            -- Если торговый день закончился, выходит в цикл по дням
+            -- Р•СЃР»Рё С‚РѕСЂРіРѕРІС‹Р№ РґРµРЅСЊ Р·Р°РєРѕРЅС‡РёР»СЃСЏ, РІС‹С…РѕРґРёС‚ РІ С†РёРєР» РїРѕ РґРЅСЏРј
             if ServerDT_sec >= StopTime_sec then PrevDayNumber = ServerDT.day break end
 
             if PocketPopAll and not isPocketPopAll_done then
@@ -399,7 +399,7 @@ function main() -- Функция, реализующая основной поток выполнения в скрипте
                 SEC_CODE = v
                 CLASS_CODE =SEC_CODES['class_codes'][i]
 
-                -- Получает ШАГ ЦЕНЫ ИНСТРУМЕНТА, последнюю цену, открытые позиции
+                -- РџРѕР»СѓС‡Р°РµС‚ РЁРђР“ Р¦Р•РќР« РРќРЎРўР РЈРњР•РќРўРђ, РїРѕСЃР»РµРґРЅСЋСЋ С†РµРЅСѓ, РѕС‚РєСЂС‹С‚С‹Рµ РїРѕР·РёС†РёРё
                 SEC_PRICE_STEP = getParamEx(CLASS_CODE, SEC_CODE, "SEC_PRICE_STEP").param_value
                 local status = getParamEx(CLASS_CODE,  SEC_CODE, "last").param_value
                 local last_price = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"last").param_value)
@@ -410,25 +410,25 @@ function main() -- Функция, реализующая основной поток выполнения в скрипте
                 if last_price == 0 or last_price == nil then
                     last_price = open_price
                 end
-                local lp = GetCell(t_id, i, tableIndex["Текущая цена"]).value or last_price
+                local lp = GetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"]).value or last_price
                 if lp < last_price then
-                    Highlight(t_id, i, tableIndex["Текущая цена"], SeaGreen, QTABLE_DEFAULT_COLOR,1000)		-- подсветка мягкий, зеленый
+                    Highlight(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"], SeaGreen, QTABLE_DEFAULT_COLOR,1000)		-- РїРѕРґСЃРІРµС‚РєР° РјСЏРіРєРёР№, Р·РµР»РµРЅС‹Р№
                 elseif lp > last_price then
-                    Highlight(t_id, i, tableIndex["Текущая цена"], RosyBrown, QTABLE_DEFAULT_COLOR,1000)		-- подсветка мягкий розовый
+                    Highlight(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"], RosyBrown, QTABLE_DEFAULT_COLOR,1000)		-- РїРѕРґСЃРІРµС‚РєР° РјСЏРіРєРёР№ СЂРѕР·РѕРІС‹Р№
                 end
-                SetCell(t_id, i, tableIndex["Текущая цена"], tostring(last_price), last_price)  --i строка, 1 - колонка, v - значение
+                SetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"], tostring(last_price), last_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 Str(i, tableIndex["VWAP"], waprice, last_price)
                 local lastchange = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"lastchange").param_value)
-                Str(i, tableIndex["%"], lastchange, 0, 0)  --i строка, 1 - колонка, v - значение
---                SetCell(t_id, i, tableIndex["Цена открытия"], tostring(open_price), open_price)  --i строка, 1 - колонка, v - значение
+                Str(i, tableIndex["%"], lastchange, 0, 0)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+--                SetCell(t_id, i, tableIndex["Р¦РµРЅР° РѕС‚РєСЂС‹С‚РёСЏ"], tostring(open_price), open_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
 --                local delta = round(last_price-open_price,5)
---                SetCell(t_id, i, tableIndex["Дельта"], tostring(delta), delta)  --i строка, 1 - колонка, v - значение
+--                SetCell(t_id, i, tableIndex["Р”РµР»СЊС‚Р°"], tostring(delta), delta)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 if IsWindowClosed(t_id) == false then
-                    local awg_price = GetCell(t_id, i, tableIndex["Средняя"]).value or 0
+                    local awg_price = GetCell(t_id, i, tableIndex["РЎСЂРµРґРЅСЏСЏ"]).value or 0
                     if tonumber(awg_price)==0 then
-                        White(i, tableIndex["Средняя"])
+                        White(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"])
                     else
-                        Str(i, tableIndex["Средняя"], tonumber(awg_price), last_price)
+                        Str(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], tonumber(awg_price), last_price)
                     end
                 end
 
@@ -477,7 +477,7 @@ function main() -- Функция, реализующая основной поток выполнения в скрипте
                         --myLog(SEC_CODE.." - newtimeCandle "..tostring(os.time(timeCandle) + INTERVAL*60))
                         if SEC_CODE_INDEX[i][cell]<DS:Size() or current_time>newTimeToCalculate and current_time < (os.time(timeCandle) + INTERVAL*60) then --new candle
 
-                            --myLog(SEC_CODE.." - Перерасчет данных за интервал "..INTERVALS["names"][cell])
+                            --myLog(SEC_CODE.." - РџРµСЂРµСЂР°СЃС‡РµС‚ РґР°РЅРЅС‹С… Р·Р° РёРЅС‚РµСЂРІР°Р» "..INTERVALS["names"][cell])
                             SEC_CODES['lastTimeCalculated'][i][cell] = current_time
 
                             --interval algorithms
@@ -534,7 +534,7 @@ function main() -- Функция, реализующая основной поток выполнения в скрипте
     end
 end
 
--- Функция ВЫЗЫВАЕТСЯ ТЕРМИНАЛОМ QUIK при остановке скрипта
+-- Р¤СѓРЅРєС†РёСЏ Р’Р«Р—Р«Р’РђР•РўРЎРЇ РўР•Р РњРРќРђР›РћРњ QUIK РїСЂРё РѕСЃС‚Р°РЅРѕРІРєРµ СЃРєСЂРёРїС‚Р°
 function OnStop()
     isRun = false
     myLog("Script Stoped")
@@ -548,49 +548,49 @@ function OnStop()
         DestroyTable(thist_id)
     end
     calcAlgoValue = nil
-    if logFile~=nil then logFile:close() end    -- Закрывает файл
+    if logFile~=nil then logFile:close() end    -- Р—Р°РєСЂС‹РІР°РµС‚ С„Р°Р№Р»
 end
  -----------------------------
- -- РАБОТА С ТАБЛИЦЕЙ --
+ -- Р РђР‘РћРўРђ РЎ РўРђР‘Р›РР¦Р•Р™ --
  -----------------------------
 
-function CreateTable() -- Функция создает таблицу
+function CreateTable() -- Р¤СѓРЅРєС†РёСЏ СЃРѕР·РґР°РµС‚ С‚Р°Р±Р»РёС†Сѓ
 
-    t_id = AllocTable() -- Получает доступный id для создания
+    t_id = AllocTable() -- РџРѕР»СѓС‡Р°РµС‚ РґРѕСЃС‚СѓРїРЅС‹Р№ id РґР»СЏ СЃРѕР·РґР°РЅРёСЏ
 	local numCol = 0
-    -- Добавляет колонки
-    AddColumn(t_id, numCol, "Инструмент", true, QTABLE_STRING_TYPE, 22)
-    tableIndex["Инструмент"] = numCol
+    -- Р”РѕР±Р°РІР»СЏРµС‚ РєРѕР»РѕРЅРєРё
+    AddColumn(t_id, numCol, "РРЅСЃС‚СЂСѓРјРµРЅС‚", true, QTABLE_STRING_TYPE, 22)
+    tableIndex["РРЅСЃС‚СЂСѓРјРµРЅС‚"] = numCol
 	numCol = numCol+1
     AddColumn(t_id, numCol, "%", true, QTABLE_DOUBLE_TYPE, 9)
     tableIndex["%"] = numCol
 	numCol = numCol+1
-    AddColumn(t_id, numCol, "Цена", true, QTABLE_DOUBLE_TYPE, 13)
-    tableIndex["Текущая цена"] = numCol
+    AddColumn(t_id, numCol, "Р¦РµРЅР°", true, QTABLE_DOUBLE_TYPE, 13)
+    tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"] = numCol
 	numCol = numCol+1
     AddColumn(t_id, numCol, "%W", true, QTABLE_DOUBLE_TYPE, 9)
     tableIndex["%W"] = numCol
 	numCol = numCol+1
- --   AddColumn(t_id, numCol, "Открытие", true, QTABLE_DOUBLE_TYPE, 13)
---    tableIndex["Цена открытия"] = numCol
+ --   AddColumn(t_id, numCol, "РћС‚РєСЂС‹С‚РёРµ", true, QTABLE_DOUBLE_TYPE, 13)
+--    tableIndex["Р¦РµРЅР° РѕС‚РєСЂС‹С‚РёСЏ"] = numCol
 --	numCol = numCol+1
     AddColumn(t_id, numCol, "VWAP", true, QTABLE_DOUBLE_TYPE, 13)
     tableIndex["VWAP"] = numCol
 	numCol = numCol+1
---    AddColumn(t_id, numCol, "Дельта", true, QTABLE_DOUBLE_TYPE, 13)
---    tableIndex["Дельта"] = numCol
+--    AddColumn(t_id, numCol, "Р”РµР»СЊС‚Р°", true, QTABLE_DOUBLE_TYPE, 13)
+--    tableIndex["Р”РµР»СЊС‚Р°"] = numCol
 	numCol = numCol+1
     AddColumn(t_id, numCol, "D ATR", true, QTABLE_DOUBLE_TYPE, 13)
     tableIndex["D ATR"] = numCol
 	numCol = numCol+1
-    AddColumn(t_id, numCol, "Поз.", true, QTABLE_INT_TYPE, 7)
-    tableIndex["Позиция"] = numCol
+    AddColumn(t_id, numCol, "РџРѕР·.", true, QTABLE_INT_TYPE, 7)
+    tableIndex["РџРѕР·РёС†РёСЏ"] = numCol
 	numCol = numCol+1
-    AddColumn(t_id, numCol, "Средняя", true, QTABLE_DOUBLE_TYPE, 13)
-    tableIndex["Средняя"] = numCol
+    AddColumn(t_id, numCol, "РЎСЂРµРґРЅСЏСЏ", true, QTABLE_DOUBLE_TYPE, 13)
+    tableIndex["РЎСЂРµРґРЅСЏСЏ"] = numCol
 	numCol = numCol+1
-    AddColumn(t_id, numCol, "Средняя", true, QTABLE_DOUBLE_TYPE, 13)
-    tableIndex["%Маржа"] = numCol
+    AddColumn(t_id, numCol, "РЎСЂРµРґРЅСЏСЏ", true, QTABLE_DOUBLE_TYPE, 13)
+    tableIndex["%РњР°СЂР¶Р°"] = numCol
     numberOfFixedColumns = numCol
     numberOfVisibleColumns = 0
     local width = 0
@@ -604,86 +604,86 @@ function CreateTable() -- Функция создает таблицу
     end
     local columns = numberOfFixedColumns
     if showTradeCommands == true then
-        AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+1, "Цена", true, QTABLE_DOUBLE_TYPE, 15) --Price
-        tableIndex["Цена сделки"] = numberOfVisibleColumns+numberOfFixedColumns+1
+        AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+1, "Р¦РµРЅР°", true, QTABLE_DOUBLE_TYPE, 15) --Price
+        tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"] = numberOfVisibleColumns+numberOfFixedColumns+1
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+2, "<", true, QTABLE_STRING_TYPE, 5) --Decrease volume
         tableIndex["<"] = numberOfVisibleColumns+numberOfFixedColumns+2
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+3, "Vol", true, QTABLE_INT_TYPE, 7) --Volume
-        tableIndex["Объем сделки"] = numberOfVisibleColumns+numberOfFixedColumns+3
+        tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"] = numberOfVisibleColumns+numberOfFixedColumns+3
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+4, ">", true, QTABLE_STRING_TYPE, 5) --Increase volume
         tableIndex[">"] = numberOfVisibleColumns+numberOfFixedColumns+4
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+5, "BUY", true, QTABLE_STRING_TYPE, 10) --BUY
-        tableIndex["Команда BUY"] = numberOfVisibleColumns+numberOfFixedColumns+5
+        tableIndex["РљРѕРјР°РЅРґР° BUY"] = numberOfVisibleColumns+numberOfFixedColumns+5
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+6, "SELL", true, QTABLE_STRING_TYPE, 10) --SELL
-        tableIndex["Команда SELL"] = numberOfVisibleColumns+numberOfFixedColumns+6
+        tableIndex["РљРѕРјР°РЅРґР° SELL"] = numberOfVisibleColumns+numberOfFixedColumns+6
         AddColumn(t_id, numberOfVisibleColumns+numberOfFixedColumns+7, "CLOSE", true, QTABLE_STRING_TYPE, 10) --CLOSE ALL
-        tableIndex["Команда CLOSE"] = numberOfVisibleColumns+numberOfFixedColumns+7
+        tableIndex["РљРѕРјР°РЅРґР° CLOSE"] = numberOfVisibleColumns+numberOfFixedColumns+7
         columns = columns + 2.3
     end
-    t = CreateWindow(t_id) -- Создает таблицу
-    SetWindowCaption(t_id, "Monitor") -- Устанавливает заголовок
-    SetWindowPos(t_id, 90, 60, 87*columns + width*5.8, #SEC_CODES['sec_codes']*17.2) -- Задает положение и размеры окна таблицы
+    t = CreateWindow(t_id) -- РЎРѕР·РґР°РµС‚ С‚Р°Р±Р»РёС†Сѓ
+    SetWindowCaption(t_id, "Monitor") -- РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ Р·Р°РіРѕР»РѕРІРѕРє
+    SetWindowPos(t_id, 90, 60, 87*columns + width*5.8, #SEC_CODES['sec_codes']*17.2) -- Р—Р°РґР°РµС‚ РїРѕР»РѕР¶РµРЅРёРµ Рё СЂР°Р·РјРµСЂС‹ РѕРєРЅР° С‚Р°Р±Р»РёС†С‹
 
-    -- Добавляет строки
+    -- Р”РѕР±Р°РІР»СЏРµС‚ СЃС‚СЂРѕРєРё
     for i,v in ipairs(SEC_CODES['names']) do
         InsertRow(t_id, i)
-        SetCell(t_id, i, tableIndex["Инструмент"], v)  --i строка, 0 - колонка, v - значение
+        SetCell(t_id, i, tableIndex["РРЅСЃС‚СЂСѓРјРµРЅС‚"], v)  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
     end
 
-    tv_id = AllocTable() -- таблица ввода значения
+    tv_id = AllocTable() -- С‚Р°Р±Р»РёС†Р° РІРІРѕРґР° Р·РЅР°С‡РµРЅРёСЏ
 
-    thist_id = AllocTable() --таблица истории сделок
+    thist_id = AllocTable() --С‚Р°Р±Р»РёС†Р° РёСЃС‚РѕСЂРёРё СЃРґРµР»РѕРє
 
-    -- Добавляет колонки
-    AddColumn(thist_id, 0, "Инструмент", true, QTABLE_STRING_TYPE, 20)
-    AddColumn(thist_id, 1, "Номер сделки", true, QTABLE_INT_TYPE, 20)
-    AddColumn(thist_id, 2, "Дата сделки", true, QTABLE_STRING_TYPE, 29)
-    AddColumn(thist_id, 3, "Тип", true, QTABLE_STRING_TYPE, 15)
-    AddColumn(thist_id, 4, "Количество", true, QTABLE_INT_TYPE, 17)
-    AddColumn(thist_id, 5, "Цена", true, QTABLE_DOUBLE_TYPE, 17)
-    AddColumn(thist_id, 6, "Комментарий", true, QTABLE_STRING_TYPE, 130)
+    -- Р”РѕР±Р°РІР»СЏРµС‚ РєРѕР»РѕРЅРєРё
+    AddColumn(thist_id, 0, "РРЅСЃС‚СЂСѓРјРµРЅС‚", true, QTABLE_STRING_TYPE, 20)
+    AddColumn(thist_id, 1, "РќРѕРјРµСЂ СЃРґРµР»РєРё", true, QTABLE_INT_TYPE, 20)
+    AddColumn(thist_id, 2, "Р”Р°С‚Р° СЃРґРµР»РєРё", true, QTABLE_STRING_TYPE, 29)
+    AddColumn(thist_id, 3, "РўРёРї", true, QTABLE_STRING_TYPE, 15)
+    AddColumn(thist_id, 4, "РљРѕР»РёС‡РµСЃС‚РІРѕ", true, QTABLE_INT_TYPE, 17)
+    AddColumn(thist_id, 5, "Р¦РµРЅР°", true, QTABLE_DOUBLE_TYPE, 17)
+    AddColumn(thist_id, 6, "РљРѕРјРјРµРЅС‚Р°СЂРёР№", true, QTABLE_STRING_TYPE, 130)
 
 end
 
-function Str(str, num, value, testvalue, dir) -- Функция выводит и окрашивает строки в таблице
+function Str(str, num, value, testvalue, dir) -- Р¤СѓРЅРєС†РёСЏ РІС‹РІРѕРґРёС‚ Рё РѕРєСЂР°С€РёРІР°РµС‚ СЃС‚СЂРѕРєРё РІ С‚Р°Р±Р»РёС†Рµ
     if dir == nil then dir = 1 end
-    SetCell(t_id, str, num, tostring(value), value) -- Выводит значение в таблицу: строка, коллонка, значение
-    if (value < testvalue and dir == 1) or (value > testvalue and dir == 0) then Green(str, num) elseif value == testvalue then Gray(str, num) else Red(str, num) end -- Окрашивает строку в зависимости от значения профита
+    SetCell(t_id, str, num, tostring(value), value) -- Р’С‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёРµ РІ С‚Р°Р±Р»РёС†Сѓ: СЃС‚СЂРѕРєР°, РєРѕР»Р»РѕРЅРєР°, Р·РЅР°С‡РµРЅРёРµ
+    if (value < testvalue and dir == 1) or (value > testvalue and dir == 0) then Green(str, num) elseif value == testvalue then Gray(str, num) else Red(str, num) end -- РћРєСЂР°С€РёРІР°РµС‚ СЃС‚СЂРѕРєСѓ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ Р·РЅР°С‡РµРЅРёСЏ РїСЂРѕС„РёС‚Р°
 end
 
  -----------------------------
- -- Функции по раскраске строк/ячеек таблицы --
+ -- Р¤СѓРЅРєС†РёРё РїРѕ СЂР°СЃРєСЂР°СЃРєРµ СЃС‚СЂРѕРє/СЏС‡РµРµРє С‚Р°Р±Р»РёС†С‹ --
  -----------------------------
 
-function Green(Line, Col) -- Зеленый
-   if Col == nil then Col = QTABLE_NO_INDEX end -- Если индекс столбца не указан, окрашивает всю строку
+function Green(Line, Col) -- Р—РµР»РµРЅС‹Р№
+   if Col == nil then Col = QTABLE_NO_INDEX end -- Р•СЃР»Рё РёРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ
    SetColor(t_id, Line, Col, RGB(165,227,128), RGB(0,0,0), RGB(165,227,128), RGB(0,0,0))
 end
 
-function Gray(Line, Col) -- Серый
-   if Col == nil then Col = QTABLE_NO_INDEX end -- Если индекс столбца не указан, окрашивает всю строку
+function Gray(Line, Col) -- РЎРµСЂС‹Р№
+   if Col == nil then Col = QTABLE_NO_INDEX end -- Р•СЃР»Рё РёРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ
    SetColor(t_id, Line, Col, RGB(200,200,200), RGB(0,0,0), RGB(200,200,200), RGB(0,0,0))
 end
 
-function Red(Line, Col) -- Красный
-   if Col == nil then Col = QTABLE_NO_INDEX end -- Если индекс столбца не указан, окрашивает всю строку
+function Red(Line, Col) -- РљСЂР°СЃРЅС‹Р№
+   if Col == nil then Col = QTABLE_NO_INDEX end -- Р•СЃР»Рё РёРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ
    SetColor(t_id, Line, Col, RGB(255,168,164), RGB(0,0,0), RGB(255,168,164), RGB(0,0,0))
 end
 
-function White(Line, Col) -- Белый
-   if Col == nil then Col = QTABLE_NO_INDEX end -- Если индекс столбца не указан, окрашивает всю строку
+function White(Line, Col) -- Р‘РµР»С‹Р№
+   if Col == nil then Col = QTABLE_NO_INDEX end -- Р•СЃР»Рё РёРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ
    SetColor(t_id, Line, Col, RGB(255,255,255), RGB(0,0,0), RGB(255,255,255), RGB(0,0,0))
 end
 
 function cellSetColor(Line, Col, Color, textColor)
-   if Col == nil then Col = QTABLE_NO_INDEX end -- Если индекс столбца не указан, окрашивает всю строку
-   if Color == nil then Color =  RGB(255,255,255) end -- Если цвет не указан, окрашивает в белый
-   if textColor == nil then textColor = RGB(0,0,0) end -- Если цвет не указан, цвет черный
+   if Col == nil then Col = QTABLE_NO_INDEX end -- Р•СЃР»Рё РёРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ
+   if Color == nil then Color =  RGB(255,255,255) end -- Р•СЃР»Рё С†РІРµС‚ РЅРµ СѓРєР°Р·Р°РЅ, РѕРєСЂР°С€РёРІР°РµС‚ РІ Р±РµР»С‹Р№
+   if textColor == nil then textColor = RGB(0,0,0) end -- Р•СЃР»Рё С†РІРµС‚ РЅРµ СѓРєР°Р·Р°РЅ, С†РІРµС‚ С‡РµСЂРЅС‹Р№
    SetColor(t_id, Line, Col, Color, textColor, Color, textColor)
 end
 
 -----------------------------
--- Обработка команд таблицы --
+-- РћР±СЂР°Р±РѕС‚РєР° РєРѕРјР°РЅРґ С‚Р°Р±Р»РёС†С‹ --
 -----------------------------
 function volume_event_callback(tv_id, msg, par1, par2)
     if par1 == -1 then
@@ -707,140 +707,140 @@ function event_callback(t_id, msg, par1, par2)
 
     if msg == QTABLE_LBUTTONDBLCLK and showTradeCommands == true then
 
-        if par2 == tableIndex["Инструмент"] then --Выводим сделки
+        if par2 == tableIndex["РРЅСЃС‚СЂСѓРјРµРЅС‚"] then --Р’С‹РІРѕРґРёРј СЃРґРµР»РєРё
            createDealsTable(par1)
         end
-        if par2 == tableIndex["Текущая цена"] or par2 == tableIndex["Средняя"] or (par2 > numberOfFixedColumns and par2 <= numberOfVisibleColumns+numberOfFixedColumns) then --Берем цену
+        if par2 == tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"] or par2 == tableIndex["РЎСЂРµРґРЅСЏСЏ"] or (par2 > numberOfFixedColumns and par2 <= numberOfVisibleColumns+numberOfFixedColumns) then --Р‘РµСЂРµРј С†РµРЅСѓ
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
             local newPrice = GetCorrectPrice(GetCell(t_id, par1, par2).value, TRADE_CLASS_CODE, TRADE_SEC_CODE)
             local stringPrice = string.gsub(tostring(newPrice),',', '.')
             local numberPrice = tonumber(stringPrice)
              if numberPrice~=nil and numberPrice~=0 then
-                SetCell(t_id, par1, tableIndex["Цена сделки"], stringPrice, numberPrice)  --i строка, 1 - колонка, v - значение
+                SetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"], stringPrice, numberPrice)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             end
         end
-        if par2 == tableIndex["Цена сделки"] and IsWindowClosed(tv_id) then --Вводим цену
+        if par2 == tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"] and IsWindowClosed(tv_id) then --Р’РІРѕРґРёРј С†РµРЅСѓ
             tstr = par1
             tcell = par2
-            AddColumn(tv_id, 0, "Значение", true, QTABLE_DOUBLE_TYPE, 25)
+            AddColumn(tv_id, 0, "Р—РЅР°С‡РµРЅРёРµ", true, QTABLE_DOUBLE_TYPE, 25)
             tv = CreateWindow(tv_id)
-            SetWindowCaption(tv_id, "Введите цену")
+            SetWindowCaption(tv_id, "Р’РІРµРґРёС‚Рµ С†РµРЅСѓ")
             SetWindowPos(tv_id, 290, 260, 250, 100)
             InsertRow(tv_id, 1)
-            SetCell(tv_id, 1, 0, GetCell(t_id, par1, tableIndex["Цена сделки"]).image, GetCell(t_id, par1, tableIndex["Цена сделки"]).value)  --i строка, 0 - колонка, v - значение
+            SetCell(tv_id, 1, 0, GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).image, GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).value)  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         end
-        if par2 == tableIndex["Объем сделки"] and IsWindowClosed(tv_id) then --Вводим объем
+        if par2 == tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"] and IsWindowClosed(tv_id) then --Р’РІРѕРґРёРј РѕР±СЉРµРј
             tstr = par1
             tcell = par2
-            AddColumn(tv_id, 0, "Значение", true, QTABLE_INT_TYPE, 25)
+            AddColumn(tv_id, 0, "Р—РЅР°С‡РµРЅРёРµ", true, QTABLE_INT_TYPE, 25)
             tv = CreateWindow(tv_id)
-            SetWindowCaption(tv_id, "Введите объем")
+            SetWindowCaption(tv_id, "Р’РІРµРґРёС‚Рµ РѕР±СЉРµРј")
             SetWindowPos(tv_id, 290, 260, 250, 100)
             InsertRow(tv_id, 1)
-            SetCell(tv_id, 1, 0, GetCell(t_id, par1, tableIndex["Объем сделки"]).image, GetCell(t_id, par1, tableIndex["Объем сделки"]).value)  --i строка, 0 - колонка, v - значение
+            SetCell(tv_id, 1, 0, GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).image, GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).value)  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         end
-        if par2 == tableIndex["Команда CLOSE"] then -- All Close
+        if par2 == tableIndex["РљРѕРјР°РЅРґР° CLOSE"] then -- All Close
             local TRADE_SEC_NAME = SEC_CODES['names'][par1]
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
-            local QTY_LOTS = GetCell(t_id, par1, tableIndex["Позиция"]).value
+            local QTY_LOTS = GetCell(t_id, par1, tableIndex["РџРѕР·РёС†РёСЏ"]).value
             if QTY_LOTS == 0 or QTY_LOTS==nil then
-                message("Некорректно указан объем!!!")
+                message("РќРµРєРѕСЂСЂРµРєС‚РЅРѕ СѓРєР°Р·Р°РЅ РѕР±СЉРµРј!!!")
                 return
             end
             if QTY_LOTS ~=0 then
                 local CurrentDirect = 'SELL'
-                message(TRADE_SEC_NAME.." Закрытие всей позиции, Объем: "..tostring(QTY_LOTS)..", по рынку")
+                message(TRADE_SEC_NAME.." Р—Р°РєСЂС‹С‚РёРµ РІСЃРµР№ РїРѕР·РёС†РёРё, РћР±СЉРµРј: "..tostring(QTY_LOTS)..", РїРѕ СЂС‹РЅРєСѓ")
                 MakeTransaction(CurrentDirect, QTY_LOTS, 0, TRADE_CLASS_CODE, TRADE_SEC_CODE)
             end
         end
-        if par2 == tableIndex["Команда BUY"] then --BUY volume
+        if par2 == tableIndex["РљРѕРјР°РЅРґР° BUY"] then --BUY volume
             local TRADE_SEC_NAME = SEC_CODES['names'][par1]
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
             local CurrentDirect = 'BUY'
-            local QTY_LOTS = GetCell(t_id, par1, tableIndex["Объем сделки"]).value
+            local QTY_LOTS = GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).value
             if QTY_LOTS == 0 or QTY_LOTS==nil then
-                message("Некорректно указан объем!!!")
+                message("РќРµРєРѕСЂСЂРµРєС‚РЅРѕ СѓРєР°Р·Р°РЅ РѕР±СЉРµРј!!!")
                 return
             end
-            local TRADE_PRICE = GetCell(t_id, par1, tableIndex["Цена сделки"]).value
-            local checkString = GetCell(t_id, par1, tableIndex["Цена сделки"]).image
+            local TRADE_PRICE = GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).value
+            local checkString = GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).image
             if (TRADE_PRICE==nil or TRADE_PRICE==0) and string.len(checkString) ~= 0 then
-                message("Некорректно указана цена: "..tostring(TRADE_PRICE))
+                message("РќРµРєРѕСЂСЂРµРєС‚РЅРѕ СѓРєР°Р·Р°РЅР° С†РµРЅР°: "..tostring(TRADE_PRICE))
                 return
             end
-            message(TRADE_SEC_NAME.." Покупка, Объем: "..tostring(QTY_LOTS)..", Цена: "..tostring(TRADE_PRICE))
+            message(TRADE_SEC_NAME.." РџРѕРєСѓРїРєР°, РћР±СЉРµРј: "..tostring(QTY_LOTS)..", Р¦РµРЅР°: "..tostring(TRADE_PRICE))
             MakeTransaction(CurrentDirect, QTY_LOTS, TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
         end
-        if par2 == tableIndex["Команда SELL"] then --SELL volume
+        if par2 == tableIndex["РљРѕРјР°РЅРґР° SELL"] then --SELL volume
             local TRADE_SEC_NAME = SEC_CODES['names'][par1]
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
             local CurrentDirect = 'SELL'
-            local QTY_LOTS = GetCell(t_id, par1, tableIndex["Объем сделки"]).value
+            local QTY_LOTS = GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).value
             if QTY_LOTS == 0 or QTY_LOTS==nil then
-                message("Некорректно указан объем!!!")
+                message("РќРµРєРѕСЂСЂРµРєС‚РЅРѕ СѓРєР°Р·Р°РЅ РѕР±СЉРµРј!!!")
                 return
             end
-            local TRADE_PRICE = GetCell(t_id, par1, tableIndex["Цена сделки"]).value
-            local checkString = GetCell(t_id, par1, tableIndex["Цена сделки"]).image
+            local TRADE_PRICE = GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).value
+            local checkString = GetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"]).image
             if (TRADE_PRICE==nil or TRADE_PRICE==0) and string.len(checkString) ~= 0 then
-                message("Некорректно указана цена: "..tostring(TRADE_PRICE))
+                message("РќРµРєРѕСЂСЂРµРєС‚РЅРѕ СѓРєР°Р·Р°РЅР° С†РµРЅР°: "..tostring(TRADE_PRICE))
                 return
             end
-            message(TRADE_SEC_NAME.." Продажа, Объем: "..tostring(QTY_LOTS)..", Цена: "..tostring(TRADE_PRICE))
+            message(TRADE_SEC_NAME.." РџСЂРѕРґР°Р¶Р°, РћР±СЉРµРј: "..tostring(QTY_LOTS)..", Р¦РµРЅР°: "..tostring(TRADE_PRICE))
             MakeTransaction(CurrentDirect, QTY_LOTS, TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
         end
         if par2 ==  tableIndex["<"] then
-            local newVolume = GetCell(t_id, par1, tableIndex["Объем сделки"]).value - SEC_CODES['volume'][par1]
-            SetCell(t_id, par1, tableIndex["Объем сделки"], tostring(newVolume), newVolume)  --i строка, 1 - колонка, v - значение
+            local newVolume = GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).value - SEC_CODES['volume'][par1]
+            SetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"], tostring(newVolume), newVolume)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         end
         if par2 == tableIndex[">"] then
-            local newVolume = GetCell(t_id, par1, tableIndex["Объем сделки"]).value + SEC_CODES['volume'][par1]
-            SetCell(t_id, par1, tableIndex["Объем сделки"], tostring(newVolume), newVolume)  --i строка, 1 - колонка, v - значение
+            local newVolume = GetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"]).value + SEC_CODES['volume'][par1]
+            SetCell(t_id, par1, tableIndex["РћР±СЉРµРј СЃРґРµР»РєРё"], tostring(newVolume), newVolume)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
         end
     end
     if msg == QTABLE_CHAR and showTradeCommands == true then
-        --message("Клавиша "..tostring(par2))
+        --message("РљР»Р°РІРёС€Р° "..tostring(par2))
         if tostring(par2) == "8" then --BackSpace
-           SetCell(t_id, par1, tableIndex["Цена сделки"], "")
+           SetCell(t_id, par1, tableIndex["Р¦РµРЅР° СЃРґРµР»РєРё"], "")
         end
         if tostring(par2) == "68" or tostring(par2) == "194" then --Shift+D
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_SEC_NAME = SEC_CODES['names'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
-            message("Удаляем все заявки "..TRADE_SEC_NAME)
+            message("РЈРґР°Р»СЏРµРј РІСЃРµ Р·Р°СЏРІРєРё "..TRADE_SEC_NAME)
             KillAllOrders("orders", TRADE_CLASS_CODE, TRADE_SEC_CODE)
         end
         if tostring(par2) == "83" or tostring(par2) == "219" then --Shift+S
             local TRADE_SEC_CODE = SEC_CODES['sec_codes'][par1]
             local TRADE_SEC_NAME = SEC_CODES['names'][par1]
             local TRADE_CLASS_CODE = SEC_CODES['class_codes'][par1]
-            message("Удаляем все стоп заявки "..TRADE_SEC_NAME)
+            message("РЈРґР°Р»СЏРµРј РІСЃРµ СЃС‚РѕРї Р·Р°СЏРІРєРё "..TRADE_SEC_NAME)
             KillAllOrders("stop_orders", TRADE_CLASS_CODE, TRADE_SEC_CODE)
         end
         if tostring(par2) == "65" or tostring(par2) == "212" then --sound --Shift+A
             local curSound = SEC_CODES['isPlaySound'][par1]
             if curSound == 1 then
                 SEC_CODES['isPlaySound'][par1] = 0
-                message("Выключаем звук у  "..SEC_CODES['names'][par1])
+                message("Р’С‹РєР»СЋС‡Р°РµРј Р·РІСѓРє Сѓ  "..SEC_CODES['names'][par1])
             else
                 SEC_CODES['isPlaySound'][par1] = 1
-                message("Включаем звук у "..SEC_CODES['names'][par1])
+                message("Р’РєР»СЋС‡Р°РµРј Р·РІСѓРє Сѓ "..SEC_CODES['names'][par1])
             end
         end
     end
-    if (msg==QTABLE_CLOSE) then --закрытие окна
+    if (msg==QTABLE_CLOSE) then --Р·Р°РєСЂС‹С‚РёРµ РѕРєРЅР°
         isRun = false
     end
 end
 -----------------------------
--- Обработка команд таблицы --
+-- РћР±СЂР°Р±РѕС‚РєР° РєРѕРјР°РЅРґ С‚Р°Р±Р»РёС†С‹ --
 -----------------------------
 
---Создание таблицы истоии сделок
+--РЎРѕР·РґР°РЅРёРµ С‚Р°Р±Р»РёС†С‹ РёСЃС‚РѕРёРё СЃРґРµР»РѕРє
 function createDealsTable(iSec)
 
     Clear(thist_id)
@@ -854,7 +854,7 @@ function createDealsTable(iSec)
 
         if IsWindowClosed(thist_id) then
             thist = CreateWindow(thist_id)
-            SetWindowCaption(thist_id, "Сделки")
+            SetWindowCaption(thist_id, "РЎРґРµР»РєРё")
             SetWindowPos(thist_id, 290, 260, 1400, 800)
         end
 
@@ -862,8 +862,8 @@ function createDealsTable(iSec)
 
         local tradeTable = {}
 
-        -- Перебирает строки файла, считывает содержимое в массив сделок
-        local Count = 0 -- Счетчик строк
+        -- РџРµСЂРµР±РёСЂР°РµС‚ СЃС‚СЂРѕРєРё С„Р°Р№Р»Р°, СЃС‡РёС‚С‹РІР°РµС‚ СЃРѕРґРµСЂР¶РёРјРѕРµ РІ РјР°СЃСЃРёРІ СЃРґРµР»РѕРє
+        local Count = 0 -- РЎС‡РµС‚С‡РёРє СЃС‚СЂРѕРє
         for line in TradesFile:lines() do
 
             Count = Count + 1
@@ -873,7 +873,7 @@ function createDealsTable(iSec)
                 SetCell(thist_id, Count - 1, 0, SEC_CODES['names'][iSec])
 
 
-                local i = 0 -- счетчик элементов строки
+                local i = 0 -- СЃС‡РµС‚С‡РёРє СЌР»РµРјРµРЅС‚РѕРІ СЃС‚СЂРѕРєРё
                 local dateDeal = ''
                 local timeDeal = ''
                 local prefix = 1
@@ -889,11 +889,11 @@ function createDealsTable(iSec)
                         SetCell(thist_id, Count - 1, 2, dateDeal.." "..timeDeal)
                     elseif i == 6 then
                         if str == "B" then
-                            SetCell(thist_id, Count - 1, 3, "Покупка")
+                            SetCell(thist_id, Count - 1, 3, "РџРѕРєСѓРїРєР°")
                             prefix = 1
                             --SetColor(thist_id, Count - 1, QTABLE_NO_INDEX, RGB(165,227,128), RGB(0,0,0), RGB(165,227,128), RGB(0,0,0))
                         else
-                            SetCell(thist_id, Count - 1, 3, "Продажа")
+                            SetCell(thist_id, Count - 1, 3, "РџСЂРѕРґР°Р¶Р°")
                             prefix = -1
                         end
                     elseif i == 7 then
@@ -936,34 +936,34 @@ function createDealsTable(iSec)
         end
 
     else
-        message("Сделок по инструменту нет")
+        message("РЎРґРµР»РѕРє РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ РЅРµС‚")
     end
 end
 
 -------------------------------------
---Торговля--
+--РўРѕСЂРіРѕРІР»СЏ--
 -------------------------------------
--- Функция вызывается терминалом QUIK при получении ответа на транзакцию пользователя
+-- Р¤СѓРЅРєС†РёСЏ РІС‹Р·С‹РІР°РµС‚СЃСЏ С‚РµСЂРјРёРЅР°Р»РѕРј QUIK РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РѕС‚РІРµС‚Р° РЅР° С‚СЂР°РЅР·Р°РєС†РёСЋ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 function OnTransReply(trans_reply)
-    -- Если поступила информация по текущей транзакции
+    -- Р•СЃР»Рё РїРѕСЃС‚СѓРїРёР»Р° РёРЅС„РѕСЂРјР°С†РёСЏ РїРѕ С‚РµРєСѓС‰РµР№ С‚СЂР°РЅР·Р°РєС†РёРё
     if trans_reply.trans_id == trans_id then
-        -- Передает статус в глобальную переменную
+        -- РџРµСЂРµРґР°РµС‚ СЃС‚Р°С‚СѓСЃ РІ РіР»РѕР±Р°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ
         trans_Status = trans_reply.status
-        -- Передает сообщение в глобальную переменную
+        -- РџРµСЂРµРґР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РІ РіР»РѕР±Р°Р»СЊРЅСѓСЋ РїРµСЂРµРјРµРЅРЅСѓСЋ
         trans_result_msg  = trans_reply.result_msg
 
         if Status == 2 then
-            message("Ошибка при передаче транзакции в торговую систему. Так как отсутствует подключение шлюза Московской Биржи, повторно транзакция не отправляется")
-            myLog("Ошибка при передаче транзакции в торговую систему. Так как отсутствует подключение шлюза Московской Биржи, повторно транзакция не отправляется")
+            message("РћС€РёР±РєР° РїСЂРё РїРµСЂРµРґР°С‡Рµ С‚СЂР°РЅР·Р°РєС†РёРё РІ С‚РѕСЂРіРѕРІСѓСЋ СЃРёСЃС‚РµРјСѓ. РўР°Рє РєР°Рє РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёРµ С€Р»СЋР·Р° РњРѕСЃРєРѕРІСЃРєРѕР№ Р‘РёСЂР¶Рё, РїРѕРІС‚РѕСЂРЅРѕ С‚СЂР°РЅР·Р°РєС†РёСЏ РЅРµ РѕС‚РїСЂР°РІР»СЏРµС‚СЃСЏ")
+            myLog("РћС€РёР±РєР° РїСЂРё РїРµСЂРµРґР°С‡Рµ С‚СЂР°РЅР·Р°РєС†РёРё РІ С‚РѕСЂРіРѕРІСѓСЋ СЃРёСЃС‚РµРјСѓ. РўР°Рє РєР°Рє РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїРѕРґРєР»СЋС‡РµРЅРёРµ С€Р»СЋР·Р° РњРѕСЃРєРѕРІСЃРєРѕР№ Р‘РёСЂР¶Рё, РїРѕРІС‚РѕСЂРЅРѕ С‚СЂР°РЅР·Р°РєС†РёСЏ РЅРµ РѕС‚РїСЂР°РІР»СЏРµС‚СЃСЏ")
         end
 
         if trans_Status > 3 then
-            if trans_Status == 4 then messageText = "Транзакция не исполнена" end
-            if trans_Status == 5 then messageText = "Транзакция не прошла проверку сервера QUIK" end
-            if trans_Status == 6 then messageText = "Транзакция не прошла проверку лимитов сервера QUIK" end
-            if trans_Status == 7 then messageText = "Транзакция не поддерживается торговой системой" end
-            message('NRTR monitor: Транзакция вернула ошибку: '..messageText)
-            myLog('NRTR monitor: Транзакция вернула ошибку: '..messageText)
+            if trans_Status == 4 then messageText = "РўСЂР°РЅР·Р°РєС†РёСЏ РЅРµ РёСЃРїРѕР»РЅРµРЅР°" end
+            if trans_Status == 5 then messageText = "РўСЂР°РЅР·Р°РєС†РёСЏ РЅРµ РїСЂРѕС€Р»Р° РїСЂРѕРІРµСЂРєСѓ СЃРµСЂРІРµСЂР° QUIK" end
+            if trans_Status == 6 then messageText = "РўСЂР°РЅР·Р°РєС†РёСЏ РЅРµ РїСЂРѕС€Р»Р° РїСЂРѕРІРµСЂРєСѓ Р»РёРјРёС‚РѕРІ СЃРµСЂРІРµСЂР° QUIK" end
+            if trans_Status == 7 then messageText = "РўСЂР°РЅР·Р°РєС†РёСЏ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ С‚РѕСЂРіРѕРІРѕР№ СЃРёСЃС‚РµРјРѕР№" end
+            message('NRTR monitor: РўСЂР°РЅР·Р°РєС†РёСЏ РІРµСЂРЅСѓР»Р° РѕС€РёР±РєСѓ: '..messageText)
+            myLog('NRTR monitor: РўСЂР°РЅР·Р°РєС†РёСЏ РІРµСЂРЅСѓР»Р° РѕС€РёР±РєСѓ: '..messageText)
         end
 
         myLog("OnTransReply "..tostring(trans_id).." "..trans_result_msg)
@@ -981,34 +981,34 @@ function MakeTransaction(CurrentDirect, QTY_LOTS, TRADE_PRICE, TRADE_CLASS_CODE,
     return Trade(CurrentDirect, QTY_LOTS, TRADE_PRICE, TRADE_CLASS_CODE ,TRADE_SEC_CODE)
 end
 
--- Совершает СДЕЛКУ указанного типа (Type) ["BUY", или "SELL"]
+-- РЎРѕРІРµСЂС€Р°РµС‚ РЎР”Р•Р›РљРЈ СѓРєР°Р·Р°РЅРЅРѕРіРѕ С‚РёРїР° (Type) ["BUY", РёР»Рё "SELL"]
 function Trade(Type, qnt, TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
-    --Получает ID транзакции
+    --РџРѕР»СѓС‡Р°РµС‚ ID С‚СЂР°РЅР·Р°РєС†РёРё
     trans_id = trans_id + 1
     if TRADE_PRICE == nil then
         TRADE_PRICE = 0
     end
 
-    local TRADE_TYPE = 'M'-- по рынку (MARKET)
+    local TRADE_TYPE = 'M'-- РїРѕ СЂС‹РЅРєСѓ (MARKET)
     if TRADE_PRICE ~= 0 then
         TRADE_TYPE = 'L'
     end
 
     local Operation = ''
-    --Устанавливает цену и операцию, в зависимости от типа сделки и от класса инструмента
+    --РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ С†РµРЅСѓ Рё РѕРїРµСЂР°С†РёСЋ, РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РёРїР° СЃРґРµР»РєРё Рё РѕС‚ РєР»Р°СЃСЃР° РёРЅСЃС‚СЂСѓРјРµРЅС‚Р°
     TRADE_SEC_PRICE_STEP = tonumber(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, "SEC_PRICE_STEP").param_value)
     if Type == 'BUY' then
         Operation = 'B'
         if TRADE_PRICE == 0 and TRADE_CLASS_CODE ~= 'QJSIM' and TRADE_CLASS_CODE ~= 'TQBR' then
             TRADE_PRICE = getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'offer').param_value + 10*TRADE_SEC_PRICE_STEP
-        end -- по цене, завышенной на 10 мин. шагов цены
+        end -- РїРѕ С†РµРЅРµ, Р·Р°РІС‹С€РµРЅРЅРѕР№ РЅР° 10 РјРёРЅ. С€Р°РіРѕРІ С†РµРЅС‹
     else
         Operation = 'S'
         if TRADE_PRICE == 0 and TRADE_CLASS_CODE ~= 'QJSIM' and TRADE_CLASS_CODE ~= 'TQBR' then
             TRADE_PRICE = getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'bid').param_value - 10*TRADE_SEC_PRICE_STEP
-        end -- по цене, заниженной на 10 мин. шагов цены
+        end -- РїРѕ С†РµРЅРµ, Р·Р°РЅРёР¶РµРЅРЅРѕР№ РЅР° 10 РјРёРЅ. С€Р°РіРѕРІ С†РµРЅС‹
     end
-    -- Заполняет структуру для отправки транзакции
+    -- Р—Р°РїРѕР»РЅСЏРµС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР»СЏ РѕС‚РїСЂР°РІРєРё С‚СЂР°РЅР·Р°РєС†РёРё
     --TRADE_PRICE = GetCorrectPrice(TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
     myLog("script Monitor: "..TRADE_TYPE.." Transaction "..Type..' '..TRADE_PRICE)
 
@@ -1018,18 +1018,18 @@ function Trade(Type, qnt, TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
        ['CLASSCODE']  = TRADE_CLASS_CODE,
        ['SECCODE']    = TRADE_SEC_CODE,
        ['CLIENT_CODE'] = CLIENT_CODE,
-       ['OPERATION']  = Operation, -- операция ("B" - buy, или "S" - sell)
+       ['OPERATION']  = Operation, -- РѕРїРµСЂР°С†РёСЏ ("B" - buy, РёР»Рё "S" - sell)
        ['TYPE']       = TRADE_TYPE,
-       ['QUANTITY']   = tostring(qnt), -- количество
+       ['QUANTITY']   = tostring(qnt), -- РєРѕР»РёС‡РµСЃС‚РІРѕ
        ['ACCOUNT']    = ACCOUNT,
        ['PRICE']      = tostring(TRADE_PRICE),
-       ['COMMENT']    = 'script Monitor' -- Комментарий к транзакции, который будет виден в транзакциях, заявках и сделках
+       ['COMMENT']    = 'script Monitor' -- РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє С‚СЂР°РЅР·Р°РєС†РёРё, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІРёРґРµРЅ РІ С‚СЂР°РЅР·Р°РєС†РёСЏС…, Р·Р°СЏРІРєР°С… Рё СЃРґРµР»РєР°С…
     }
-    -- Отправляет транзакцию
+    -- РћС‚РїСЂР°РІР»СЏРµС‚ С‚СЂР°РЅР·Р°РєС†РёСЋ
     local res = sendTransaction(Transaction)
     if string.len(res) ~= 0 then
-        message('Script monitor: Транзакция вернула ошибку: '..res)
-        myLog('Script monitor: Транзакция вернула ошибку: '..res)
+        message('Script monitor: РўСЂР°РЅР·Р°РєС†РёСЏ РІРµСЂРЅСѓР»Р° РѕС€РёР±РєСѓ: '..res)
+        myLog('Script monitor: РўСЂР°РЅР·Р°РєС†РёСЏ РІРµСЂРЅСѓР»Р° РѕС€РёР±РєСѓ: '..res)
         return false
      end
 
@@ -1037,108 +1037,108 @@ function Trade(Type, qnt, TRADE_PRICE, TRADE_CLASS_CODE, TRADE_SEC_CODE)
 
 end
 
---TAKE_PROFIT -  минимальных шагов цены профита
---STOP_LOSS - минимальных шагов цены стоп-лосса
---TRADE_PRICE - уровень цены, на котором выстадяется стоп-заявка
---TakeProfitPrice - предыдущий тейк, для трейлинга
+--TAKE_PROFIT -  РјРёРЅРёРјР°Р»СЊРЅС‹С… С€Р°РіРѕРІ С†РµРЅС‹ РїСЂРѕС„РёС‚Р°
+--STOP_LOSS - РјРёРЅРёРјР°Р»СЊРЅС‹С… С€Р°РіРѕРІ С†РµРЅС‹ СЃС‚РѕРї-Р»РѕСЃСЃР°
+--TRADE_PRICE - СѓСЂРѕРІРµРЅСЊ С†РµРЅС‹, РЅР° РєРѕС‚РѕСЂРѕРј РІС‹СЃС‚Р°РґСЏРµС‚СЃСЏ СЃС‚РѕРї-Р·Р°СЏРІРєР°
+--TakeProfitPrice - РїСЂРµРґС‹РґСѓС‰РёР№ С‚РµР№Рє, РґР»СЏ С‚СЂРµР№Р»РёРЅРіР°
 
 function SL_TP(TRADE_PRICE, TakeProfitPrice, Type, STOP_LOSS, TAKE_PROFIT ,TRADE_CLASS_CODE, TRADE_SEC_CODE)
-    -- ID транзакции
+    -- ID С‚СЂР°РЅР·Р°РєС†РёРё
     trans_id = trans_id + 1
 
-     -- Находит направление для заявки
+     -- РќР°С…РѕРґРёС‚ РЅР°РїСЂР°РІР»РµРЅРёРµ РґР»СЏ Р·Р°СЏРІРєРё
      local operation = ""
-     local price = "0" -- Цена, по которой выставится заявка при срабатывании Стоп-Лосса (для рыночной заявки по акциям должна быть 0)
-     local stopprice = "" -- Цена Тейк-Профита
-     local stopprice2 = "" -- Цена Стоп-Лосса
-     local market = "YES" -- После срабатывания Тейка, или Стопа, заявка сработает по рыночной цене
+     local price = "0" -- Р¦РµРЅР°, РїРѕ РєРѕС‚РѕСЂРѕР№ РІС‹СЃС‚Р°РІРёС‚СЃСЏ Р·Р°СЏРІРєР° РїСЂРё СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРё РЎС‚РѕРї-Р›РѕСЃСЃР° (РґР»СЏ СЂС‹РЅРѕС‡РЅРѕР№ Р·Р°СЏРІРєРё РїРѕ Р°РєС†РёСЏРј РґРѕР»Р¶РЅР° Р±С‹С‚СЊ 0)
+     local stopprice = "" -- Р¦РµРЅР° РўРµР№Рє-РџСЂРѕС„РёС‚Р°
+     local stopprice2 = "" -- Р¦РµРЅР° РЎС‚РѕРї-Р›РѕСЃСЃР°
+     local market = "YES" -- РџРѕСЃР»Рµ СЃСЂР°Р±Р°С‚С‹РІР°РЅРёСЏ РўРµР№РєР°, РёР»Рё РЎС‚РѕРїР°, Р·Р°СЏРІРєР° СЃСЂР°Р±РѕС‚Р°РµС‚ РїРѕ СЂС‹РЅРѕС‡РЅРѕР№ С†РµРЅРµ
      local direction
      TRADE_SEC_PRICE_STEP = tonumber(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, "SEC_PRICE_STEP").param_value)
 
-  -- Если открыт BUY, то направление стоп-лосса и тейк-профита SELL, иначе направление стоп-лосса и тейк-профита BUY
+  -- Р•СЃР»Рё РѕС‚РєСЂС‹С‚ BUY, С‚Рѕ РЅР°РїСЂР°РІР»РµРЅРёРµ СЃС‚РѕРї-Р»РѕСЃСЃР° Рё С‚РµР№Рє-РїСЂРѕС„РёС‚Р° SELL, РёРЅР°С‡Рµ РЅР°РїСЂР°РІР»РµРЅРёРµ СЃС‚РѕРї-Р»РѕСЃСЃР° Рё С‚РµР№Рє-РїСЂРѕС„РёС‚Р° BUY
      if Type == 'BUY' then
-         operation = "S" -- Тейк-профит и Стоп-лосс на продажу(чтобы закрыть BUY, нужно открыть SELL)
-         direction = "5" -- Направленность стоп-цены. «5» - больше или равно
-       -- Если не акции
+         operation = "S" -- РўРµР№Рє-РїСЂРѕС„РёС‚ Рё РЎС‚РѕРї-Р»РѕСЃСЃ РЅР° РїСЂРѕРґР°Р¶Сѓ(С‡С‚РѕР±С‹ Р·Р°РєСЂС‹С‚СЊ BUY, РЅСѓР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ SELL)
+         direction = "5" -- РќР°РїСЂР°РІР»РµРЅРЅРѕСЃС‚СЊ СЃС‚РѕРї-С†РµРЅС‹. В«5В» - Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРЅРѕ
+       -- Р•СЃР»Рё РЅРµ Р°РєС†РёРё
        if TRADE_CLASS_CODE ~= 'QJSIM' and TRADE_CLASS_CODE ~= 'TQBR' then
-          price = tostring(math.floor(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'PRICEMIN').param_value)) -- Цена выставляемой заявки после страбатывания Стопа минимально возможная, чтобы не проскользнуло
-          market = "YES"  -- После срабатывания Тейка, или Стопа, заявка сработает НЕ по рыночной цене
+          price = tostring(math.floor(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'PRICEMIN').param_value)) -- Р¦РµРЅР° РІС‹СЃС‚Р°РІР»СЏРµРјРѕР№ Р·Р°СЏРІРєРё РїРѕСЃР»Рµ СЃС‚СЂР°Р±Р°С‚С‹РІР°РЅРёСЏ РЎС‚РѕРїР° РјРёРЅРёРјР°Р»СЊРЅРѕ РІРѕР·РјРѕР¶РЅР°СЏ, С‡С‚РѕР±С‹ РЅРµ РїСЂРѕСЃРєРѕР»СЊР·РЅСѓР»Рѕ
+          market = "YES"  -- РџРѕСЃР»Рµ СЃСЂР°Р±Р°С‚С‹РІР°РЅРёСЏ РўРµР№РєР°, РёР»Рё РЎС‚РѕРїР°, Р·Р°СЏРІРєР° СЃСЂР°Р±РѕС‚Р°РµС‚ РќР• РїРѕ СЂС‹РЅРѕС‡РЅРѕР№ С†РµРЅРµ
        end
          if (TakeProfitPrice or 0) == 0 then
-             stopprice	= tostring(TRADE_PRICE + TAKE_PROFIT*TRADE_SEC_PRICE_STEP) -- Уровень цены, когда активируется Тейк-профит
+             stopprice	= tostring(TRADE_PRICE + TAKE_PROFIT*TRADE_SEC_PRICE_STEP) -- РЈСЂРѕРІРµРЅСЊ С†РµРЅС‹, РєРѕРіРґР° Р°РєС‚РёРІРёСЂСѓРµС‚СЃСЏ РўРµР№Рє-РїСЂРѕС„РёС‚
              TakeProfitPrice = stopprice
          else
-             stopprice = TakeProfitPrice + math.floor(STOP_LOSS*TRADE_SEC_PRICE_STEP/2)    -- немного сдвигаем тейк-профит
+             stopprice = TakeProfitPrice + math.floor(STOP_LOSS*TRADE_SEC_PRICE_STEP/2)    -- РЅРµРјРЅРѕРіРѕ СЃРґРІРёРіР°РµРј С‚РµР№Рє-РїСЂРѕС„РёС‚
          end
-         stopprice2	= tostring(TRADE_PRICE - STOP_LOSS*TRADE_SEC_PRICE_STEP) -- Уровень цены, когда активируется Стоп-лосс
+         stopprice2	= tostring(TRADE_PRICE - STOP_LOSS*TRADE_SEC_PRICE_STEP) -- РЈСЂРѕРІРµРЅСЊ С†РµРЅС‹, РєРѕРіРґР° Р°РєС‚РёРІРёСЂСѓРµС‚СЃСЏ РЎС‚РѕРї-Р»РѕСЃСЃ
          price = stopprice2 - 2*TRADE_SEC_PRICE_STEP
-     else -- открыт SELL
-         operation = "B" -- Тейк-профит и Стоп-лосс на покупку(чтобы закрыть SELL, нужно открыть BUY)
-         direction = "4" -- Направленность стоп-цены. «4» - меньше или равно
-       -- Если не акции
+     else -- РѕС‚РєСЂС‹С‚ SELL
+         operation = "B" -- РўРµР№Рє-РїСЂРѕС„РёС‚ Рё РЎС‚РѕРї-Р»РѕСЃСЃ РЅР° РїРѕРєСѓРїРєСѓ(С‡С‚РѕР±С‹ Р·Р°РєСЂС‹С‚СЊ SELL, РЅСѓР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ BUY)
+         direction = "4" -- РќР°РїСЂР°РІР»РµРЅРЅРѕСЃС‚СЊ СЃС‚РѕРї-С†РµРЅС‹. В«4В» - РјРµРЅСЊС€Рµ РёР»Рё СЂР°РІРЅРѕ
+       -- Р•СЃР»Рё РЅРµ Р°РєС†РёРё
          if TRADE_CLASS_CODE ~= 'QJSIM' and TRADE_CLASS_CODE ~= 'TQBR' then
-          price = tostring(math.floor(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'PRICEMAX').param_value)) -- Цена выставляемой заявки после страбатывания Стопа максимально возможная, чтобы не проскользнуло
-          market = "YES"  -- После срабатывания Тейка, или Стопа, заявка сработает НЕ по рыночной цене
+          price = tostring(math.floor(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, 'PRICEMAX').param_value)) -- Р¦РµРЅР° РІС‹СЃС‚Р°РІР»СЏРµРјРѕР№ Р·Р°СЏРІРєРё РїРѕСЃР»Рµ СЃС‚СЂР°Р±Р°С‚С‹РІР°РЅРёСЏ РЎС‚РѕРїР° РјР°РєСЃРёРјР°Р»СЊРЅРѕ РІРѕР·РјРѕР¶РЅР°СЏ, С‡С‚РѕР±С‹ РЅРµ РїСЂРѕСЃРєРѕР»СЊР·РЅСѓР»Рѕ
+          market = "YES"  -- РџРѕСЃР»Рµ СЃСЂР°Р±Р°С‚С‹РІР°РЅРёСЏ РўРµР№РєР°, РёР»Рё РЎС‚РѕРїР°, Р·Р°СЏРІРєР° СЃСЂР°Р±РѕС‚Р°РµС‚ РќР• РїРѕ СЂС‹РЅРѕС‡РЅРѕР№ С†РµРЅРµ
        end
          if (TakeProfitPrice or 0) == 0 then
-             stopprice	= tostring(TRADE_PRICE - TAKE_PROFIT*TRADE_SEC_PRICE_STEP) -- Уровень цены, когда активируется Тейк-профит
+             stopprice	= tostring(TRADE_PRICE - TAKE_PROFIT*TRADE_SEC_PRICE_STEP) -- РЈСЂРѕРІРµРЅСЊ С†РµРЅС‹, РєРѕРіРґР° Р°РєС‚РёРІРёСЂСѓРµС‚СЃСЏ РўРµР№Рє-РїСЂРѕС„РёС‚
              TakeProfitPrice = stopprice
          else
-             stopprice = TakeProfitPrice - math.floor(STOP_LOSS*TRADE_SEC_PRICE_STEP/2)  -- немного сдвигаем тейк-профит
+             stopprice = TakeProfitPrice - math.floor(STOP_LOSS*TRADE_SEC_PRICE_STEP/2)  -- РЅРµРјРЅРѕРіРѕ СЃРґРІРёРіР°РµРј С‚РµР№Рє-РїСЂРѕС„РёС‚
          end
-         stopprice2	= tostring(TRADE_PRICE + STOP_LOSS*TRADE_SEC_PRICE_STEP) -- Уровень цены, когда активируется Стоп-лосс
+         stopprice2	= tostring(TRADE_PRICE + STOP_LOSS*TRADE_SEC_PRICE_STEP) -- РЈСЂРѕРІРµРЅСЊ С†РµРЅС‹, РєРѕРіРґР° Р°РєС‚РёРІРёСЂСѓРµС‚СЃСЏ РЎС‚РѕРї-Р»РѕСЃСЃ
          price = stopprice2 + 2*TRADE_SEC_PRICE_STEP
      end
-     -- Заполняет структуру для отправки транзакции на Стоп-лосс и Тейк-профит
-      myLog('Script monitor: Установка ТЕЙК-ПРОФИТ: '..stopprice..' и СТОП-ЛОСС: '..stopprice2)
+     -- Р—Р°РїРѕР»РЅСЏРµС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР»СЏ РѕС‚РїСЂР°РІРєРё С‚СЂР°РЅР·Р°РєС†РёРё РЅР° РЎС‚РѕРї-Р»РѕСЃСЃ Рё РўРµР№Рє-РїСЂРѕС„РёС‚
+      myLog('Script monitor: РЈСЃС‚Р°РЅРѕРІРєР° РўР•Р™Рљ-РџР РћР¤РРў: '..stopprice..' Рё РЎРўРћРџ-Р›РћРЎРЎ: '..stopprice2)
 
      local Transaction = {
-         ["ACTION"]              = "NEW_STOP_ORDER", -- Тип заявки
+         ["ACTION"]              = "NEW_STOP_ORDER", -- РўРёРї Р·Р°СЏРІРєРё
          ["TRANS_ID"]            = tostring(trans_id),
          ["CLASSCODE"]           = TRADE_CLASS_CODE,
          ["SECCODE"]             = TRADE_SEC_CODE,
          ["ACCOUNT"]             = ACCOUNT,
-         ['CLIENT_CODE'] = CLIENT_CODE, -- Комментарий к транзакции, который будет виден в транзакциях, заявках и сделках
-         ["OPERATION"]           = operation, -- Операция ("B" - покупка(BUY), "S" - продажа(SELL))
-         ["QUANTITY"]            = tostring(QTY_LOTS), -- Количество в лотах
-         ["PRICE"]               = GetCorrectPrice(price), -- Цена, по которой выставится заявка при срабатывании Стоп-Лосса (для рыночной заявки по акциям должна быть 0)
-         ["STOPPRICE"]           = GetCorrectPrice(stopprice), -- Цена Тейк-Профита
-         ["STOP_ORDER_KIND"]     = "TAKE_PROFIT_AND_STOP_LIMIT_ORDER", -- Тип стоп-заявки
-         ["EXPIRY_DATE"]         = "GTC", -- Срок действия стоп-заявки ("GTC" – до отмены,"TODAY" - до окончания текущей торговой сессии, Дата в формате "ГГММДД")
-       -- "OFFSET" - (ОТСТУП)Если цена достигла Тейк-профита и идет дальше в прибыль,
-       -- то Тейк-профит сработает только когда цена вернется минимум на 2 шага цены назад,
-       -- это может потенциально увеличить прибыль
+         ['CLIENT_CODE'] = CLIENT_CODE, -- РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє С‚СЂР°РЅР·Р°РєС†РёРё, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІРёРґРµРЅ РІ С‚СЂР°РЅР·Р°РєС†РёСЏС…, Р·Р°СЏРІРєР°С… Рё СЃРґРµР»РєР°С…
+         ["OPERATION"]           = operation, -- РћРїРµСЂР°С†РёСЏ ("B" - РїРѕРєСѓРїРєР°(BUY), "S" - РїСЂРѕРґР°Р¶Р°(SELL))
+         ["QUANTITY"]            = tostring(QTY_LOTS), -- РљРѕР»РёС‡РµСЃС‚РІРѕ РІ Р»РѕС‚Р°С…
+         ["PRICE"]               = GetCorrectPrice(price), -- Р¦РµРЅР°, РїРѕ РєРѕС‚РѕСЂРѕР№ РІС‹СЃС‚Р°РІРёС‚СЃСЏ Р·Р°СЏРІРєР° РїСЂРё СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРё РЎС‚РѕРї-Р›РѕСЃСЃР° (РґР»СЏ СЂС‹РЅРѕС‡РЅРѕР№ Р·Р°СЏРІРєРё РїРѕ Р°РєС†РёСЏРј РґРѕР»Р¶РЅР° Р±С‹С‚СЊ 0)
+         ["STOPPRICE"]           = GetCorrectPrice(stopprice), -- Р¦РµРЅР° РўРµР№Рє-РџСЂРѕС„РёС‚Р°
+         ["STOP_ORDER_KIND"]     = "TAKE_PROFIT_AND_STOP_LIMIT_ORDER", -- РўРёРї СЃС‚РѕРї-Р·Р°СЏРІРєРё
+         ["EXPIRY_DATE"]         = "GTC", -- РЎСЂРѕРє РґРµР№СЃС‚РІРёСЏ СЃС‚РѕРї-Р·Р°СЏРІРєРё ("GTC" вЂ“ РґРѕ РѕС‚РјРµРЅС‹,"TODAY" - РґРѕ РѕРєРѕРЅС‡Р°РЅРёСЏ С‚РµРєСѓС‰РµР№ С‚РѕСЂРіРѕРІРѕР№ СЃРµСЃСЃРёРё, Р”Р°С‚Р° РІ С„РѕСЂРјР°С‚Рµ "Р“Р“РњРњР”Р”")
+       -- "OFFSET" - (РћРўРЎРўРЈРџ)Р•СЃР»Рё С†РµРЅР° РґРѕСЃС‚РёРіР»Р° РўРµР№Рє-РїСЂРѕС„РёС‚Р° Рё РёРґРµС‚ РґР°Р»СЊС€Рµ РІ РїСЂРёР±С‹Р»СЊ,
+       -- С‚Рѕ РўРµР№Рє-РїСЂРѕС„РёС‚ СЃСЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ РєРѕРіРґР° С†РµРЅР° РІРµСЂРЅРµС‚СЃСЏ РјРёРЅРёРјСѓРј РЅР° 2 С€Р°РіР° С†РµРЅС‹ РЅР°Р·Р°Рґ,
+       -- СЌС‚Рѕ РјРѕР¶РµС‚ РїРѕС‚РµРЅС†РёР°Р»СЊРЅРѕ СѓРІРµР»РёС‡РёС‚СЊ РїСЂРёР±С‹Р»СЊ
          ["OFFSET"]              = tostring(2*TRADE_SEC_PRICE_STEP),
-         ["OFFSET_UNITS"]        = "PRICE_UNITS", -- Единицы измерения отступа ("PRICE_UNITS" - шаг цены, или "PERCENTS" - проценты)
-       -- "SPREAD" - Когда сработает Тейк-профит, выставится заявка по цене хуже текущей на 100 шагов цены,
-       -- которая АВТОМАТИЧЕСКИ УДОВЛЕТВОРИТСЯ ПО ТЕКУЩЕЙ ЛУЧШЕЙ ЦЕНЕ,
-       -- но то, что цена значительно хуже, спасет от проскальзывания,
-       -- иначе, сделка может просто не закрыться (заявка на закрытие будет выставлена, но цена к тому времени ее уже проскочит)
+         ["OFFSET_UNITS"]        = "PRICE_UNITS", -- Р•РґРёРЅРёС†С‹ РёР·РјРµСЂРµРЅРёСЏ РѕС‚СЃС‚СѓРїР° ("PRICE_UNITS" - С€Р°Рі С†РµРЅС‹, РёР»Рё "PERCENTS" - РїСЂРѕС†РµРЅС‚С‹)
+       -- "SPREAD" - РљРѕРіРґР° СЃСЂР°Р±РѕС‚Р°РµС‚ РўРµР№Рє-РїСЂРѕС„РёС‚, РІС‹СЃС‚Р°РІРёС‚СЃСЏ Р·Р°СЏРІРєР° РїРѕ С†РµРЅРµ С…СѓР¶Рµ С‚РµРєСѓС‰РµР№ РЅР° 100 С€Р°РіРѕРІ С†РµРЅС‹,
+       -- РєРѕС‚РѕСЂР°СЏ РђР’РўРћРњРђРўРР§Р•РЎРљР РЈР”РћР’Р›Р•РўР’РћР РРўРЎРЇ РџРћ РўР•РљРЈР©Р•Р™ Р›РЈР§РЁР•Р™ Р¦Р•РќР•,
+       -- РЅРѕ С‚Рѕ, С‡С‚Рѕ С†РµРЅР° Р·РЅР°С‡РёС‚РµР»СЊРЅРѕ С…СѓР¶Рµ, СЃРїР°СЃРµС‚ РѕС‚ РїСЂРѕСЃРєР°Р»СЊР·С‹РІР°РЅРёСЏ,
+       -- РёРЅР°С‡Рµ, СЃРґРµР»РєР° РјРѕР¶РµС‚ РїСЂРѕСЃС‚Рѕ РЅРµ Р·Р°РєСЂС‹С‚СЊСЃСЏ (Р·Р°СЏРІРєР° РЅР° Р·Р°РєСЂС‹С‚РёРµ Р±СѓРґРµС‚ РІС‹СЃС‚Р°РІР»РµРЅР°, РЅРѕ С†РµРЅР° Рє С‚РѕРјСѓ РІСЂРµРјРµРЅРё РµРµ СѓР¶Рµ РїСЂРѕСЃРєРѕС‡РёС‚)
          ["SPREAD"]              = tostring(100*TRADE_SEC_PRICE_STEP),
-         ["SPREAD_UNITS"]        = "PRICE_UNITS", -- Единицы измерения защитного спрэда ("PRICE_UNITS" - шаг цены, или "PERCENTS" - проценты)
-       -- "MARKET_TAKE_PROFIT" = ("YES", или "NO") должна ли выставится заявка по рыночной цене при срабатывании Тейк-Профита.
-       -- Для рынка FORTS рыночные заявки, как правило, запрещены,
-       -- для лимитированной заявки на FORTS нужно указывать заведомо худшую цену, чтобы она сработала сразу же, как рыночная
+         ["SPREAD_UNITS"]        = "PRICE_UNITS", -- Р•РґРёРЅРёС†С‹ РёР·РјРµСЂРµРЅРёСЏ Р·Р°С‰РёС‚РЅРѕРіРѕ СЃРїСЂСЌРґР° ("PRICE_UNITS" - С€Р°Рі С†РµРЅС‹, РёР»Рё "PERCENTS" - РїСЂРѕС†РµРЅС‚С‹)
+       -- "MARKET_TAKE_PROFIT" = ("YES", РёР»Рё "NO") РґРѕР»Р¶РЅР° Р»Рё РІС‹СЃС‚Р°РІРёС‚СЃСЏ Р·Р°СЏРІРєР° РїРѕ СЂС‹РЅРѕС‡РЅРѕР№ С†РµРЅРµ РїСЂРё СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРё РўРµР№Рє-РџСЂРѕС„РёС‚Р°.
+       -- Р”Р»СЏ СЂС‹РЅРєР° FORTS СЂС‹РЅРѕС‡РЅС‹Рµ Р·Р°СЏРІРєРё, РєР°Рє РїСЂР°РІРёР»Рѕ, Р·Р°РїСЂРµС‰РµРЅС‹,
+       -- РґР»СЏ Р»РёРјРёС‚РёСЂРѕРІР°РЅРЅРѕР№ Р·Р°СЏРІРєРё РЅР° FORTS РЅСѓР¶РЅРѕ СѓРєР°Р·С‹РІР°С‚СЊ Р·Р°РІРµРґРѕРјРѕ С…СѓРґС€СѓСЋ С†РµРЅСѓ, С‡С‚РѕР±С‹ РѕРЅР° СЃСЂР°Р±РѕС‚Р°Р»Р° СЃСЂР°Р·Сѓ Р¶Рµ, РєР°Рє СЂС‹РЅРѕС‡РЅР°СЏ
          ["MARKET_TAKE_PROFIT"]  = market,
-         ["STOPPRICE2"]          = GetCorrectPrice(stopprice2), -- Цена Стоп-Лосса
+         ["STOPPRICE2"]          = GetCorrectPrice(stopprice2), -- Р¦РµРЅР° РЎС‚РѕРї-Р›РѕСЃСЃР°
          ["IS_ACTIVE_IN_TIME"]   = "NO",
-       -- "MARKET_TAKE_PROFIT" = ("YES", или "NO") должна ли выставится заявка по рыночной цене при срабатывании Стоп-Лосса.
-       -- Для рынка FORTS рыночные заявки, как правило, запрещены,
-       -- для лимитированной заявки на FORTS нужно указывать заведомо худшую цену, чтобы она сработала сразу же, как рыночная
+       -- "MARKET_TAKE_PROFIT" = ("YES", РёР»Рё "NO") РґРѕР»Р¶РЅР° Р»Рё РІС‹СЃС‚Р°РІРёС‚СЃСЏ Р·Р°СЏРІРєР° РїРѕ СЂС‹РЅРѕС‡РЅРѕР№ С†РµРЅРµ РїСЂРё СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРё РЎС‚РѕРї-Р›РѕСЃСЃР°.
+       -- Р”Р»СЏ СЂС‹РЅРєР° FORTS СЂС‹РЅРѕС‡РЅС‹Рµ Р·Р°СЏРІРєРё, РєР°Рє РїСЂР°РІРёР»Рѕ, Р·Р°РїСЂРµС‰РµРЅС‹,
+       -- РґР»СЏ Р»РёРјРёС‚РёСЂРѕРІР°РЅРЅРѕР№ Р·Р°СЏРІРєРё РЅР° FORTS РЅСѓР¶РЅРѕ СѓРєР°Р·С‹РІР°С‚СЊ Р·Р°РІРµРґРѕРјРѕ С…СѓРґС€СѓСЋ С†РµРЅСѓ, С‡С‚РѕР±С‹ РѕРЅР° СЃСЂР°Р±РѕС‚Р°Р»Р° СЃСЂР°Р·Сѓ Р¶Рµ, РєР°Рє СЂС‹РЅРѕС‡РЅР°СЏ
          ["MARKET_STOP_LIMIT"]   = market,
-         ['CONDITION'] = direction, -- Направленность стоп-цены. Возможные значения: «4» - меньше или равно, «5» – больше или равно
-         ["COMMENT"]             = "Script monitor ТЕЙК-ПРОФИТ и СТОП-ЛОСС"
+         ['CONDITION'] = direction, -- РќР°РїСЂР°РІР»РµРЅРЅРѕСЃС‚СЊ СЃС‚РѕРї-С†РµРЅС‹. Р’РѕР·РјРѕР¶РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ: В«4В» - РјРµРЅСЊС€Рµ РёР»Рё СЂР°РІРЅРѕ, В«5В» вЂ“ Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРЅРѕ
+         ["COMMENT"]             = "Script monitor РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ"
      }
-    -- Отправляет транзакцию на установку ТЕЙК-ПРОФИТ и СТОП-ЛОСС
+    -- РћС‚РїСЂР°РІР»СЏРµС‚ С‚СЂР°РЅР·Р°РєС†РёСЋ РЅР° СѓСЃС‚Р°РЅРѕРІРєСѓ РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ
     local res = sendTransaction(Transaction)
     if string.len(res) ~= 0 then
-       message('Script monitor: Установка ТЕЙК-ПРОФИТ и СТОП-ЛОСС не удалась!\nОШИБКА: '..res)
-       myLog('Script monitor: Установка ТЕЙК-ПРОФИТ и СТОП-ЛОСС не удалась!\nОШИБКА: '..res)
+       message('Script monitor: РЈСЃС‚Р°РЅРѕРІРєР° РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ РЅРµ СѓРґР°Р»Р°СЃСЊ!\nРћРЁРР‘РљРђ: '..res)
+       myLog('Script monitor: РЈСЃС‚Р°РЅРѕРІРєР° РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ РЅРµ СѓРґР°Р»Р°СЃСЊ!\nРћРЁРР‘РљРђ: '..res)
        return false
     else
-       -- Выводит сообщение
-       message('Script monitor: ВЫСТАВЛЕНА заявка ТЕЙК-ПРОФИТ и СТОП-ЛОСС: '..trans_id)
-      myLog('Script monitor: ВЫСТАВЛЕНА заявка ТЕЙК-ПРОФИТ и СТОП-ЛОСС: '..trans_id)
+       -- Р’С‹РІРѕРґРёС‚ СЃРѕРѕР±С‰РµРЅРёРµ
+       message('Script monitor: Р’Р«РЎРўРђР’Р›Р•РќРђ Р·Р°СЏРІРєР° РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ: '..trans_id)
+      myLog('Script monitor: Р’Р«РЎРўРђР’Р›Р•РќРђ Р·Р°СЏРІРєР° РўР•Р™Рљ-РџР РћР¤РРў Рё РЎРўРћРџ-Р›РћРЎРЎ: '..trans_id)
       return true
     end
 
@@ -1161,52 +1161,52 @@ function KillAllOrders(ordtable, TRADE_CLASS_CODE, TRADE_SEC_CODE)
     if (orders ~= nil) and (#orders > 0) then
 
         for i=1,#orders do
-         -- Получает ID для следующей транзакции
+         -- РџРѕР»СѓС‡Р°РµС‚ ID РґР»СЏ СЃР»РµРґСѓСЋС‰РµР№ С‚СЂР°РЅР·Р°РєС†РёРё
         trans_id = trans_id + 1
-        -- Заполняет структуру для отправки транзакции на снятие стоп-заявки
+        -- Р—Р°РїРѕР»РЅСЏРµС‚ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР»СЏ РѕС‚РїСЂР°РІРєРё С‚СЂР°РЅР·Р°РєС†РёРё РЅР° СЃРЅСЏС‚РёРµ СЃС‚РѕРї-Р·Р°СЏРІРєРё
          local Transaction = {
-             ["ACTION"]              = action, -- Тип заявки
+             ["ACTION"]              = action, -- РўРёРї Р·Р°СЏРІРєРё
              ["TRANS_ID"]            = tostring(trans_id),
              ["CLASSCODE"]           = TRADE_CLASS_CODE,
              ["SECCODE"]             = TRADE_SEC_CODE,
              ["ACCOUNT"]             = ACCOUNT,
-             ['CLIENT_CODE'] = CLIENT_CODE, -- Комментарий к транзакции, который будет виден в транзакциях, заявках и сделках
-             [order_key]      = tostring(getItem(ordtable,orders[i]).order_num) -- Номер заявки, снимаемой из торговой системы
+             ['CLIENT_CODE'] = CLIENT_CODE, -- РљРѕРјРјРµРЅС‚Р°СЂРёР№ Рє С‚СЂР°РЅР·Р°РєС†РёРё, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚ РІРёРґРµРЅ РІ С‚СЂР°РЅР·Р°РєС†РёСЏС…, Р·Р°СЏРІРєР°С… Рё СЃРґРµР»РєР°С…
+             [order_key]      = tostring(getItem(ordtable,orders[i]).order_num) -- РќРѕРјРµСЂ Р·Р°СЏРІРєРё, СЃРЅРёРјР°РµРјРѕР№ РёР· С‚РѕСЂРіРѕРІРѕР№ СЃРёСЃС‚РµРјС‹
          }
-            -- Отправляет транзакцию
+            -- РћС‚РїСЂР°РІР»СЏРµС‚ С‚СЂР°РЅР·Р°РєС†РёСЋ
             local Res = sendTransaction(Transaction)
-            -- Если при отправке транзакции возникла ошибка
+            -- Р•СЃР»Рё РїСЂРё РѕС‚РїСЂР°РІРєРµ С‚СЂР°РЅР·Р°РєС†РёРё РІРѕР·РЅРёРєР»Р° РѕС€РёР±РєР°
             if string.len(Res) ~= 0 then
-               -- Выводит ошибку
-               message('Ошибка снятия заявки: '..Res)
-               myLog('Ошибка снятия заявки: '..Res)
+               -- Р’С‹РІРѕРґРёС‚ РѕС€РёР±РєСѓ
+               message('РћС€РёР±РєР° СЃРЅСЏС‚РёСЏ Р·Р°СЏРІРєРё: '..Res)
+               myLog('РћС€РёР±РєР° СЃРЅСЏС‚РёСЏ Р·Р°СЏРІРєРё: '..Res)
                return false
             end
 
            local order = getItem(ordtable, orders[i])
-           -- Если стоп-заявка не активна
-           myLog('прверка заявки: '..order.sec_code..' number: '..tostring(order.order_num))
+           -- Р•СЃР»Рё СЃС‚РѕРї-Р·Р°СЏРІРєР° РЅРµ Р°РєС‚РёРІРЅР°
+           myLog('РїСЂРІРµСЂРєР° Р·Р°СЏРІРєРё: '..order.sec_code..' number: '..tostring(order.order_num))
            if not bit.test(order.flags, 0) then
-              -- Если заявка успела исполниться
+              -- Р•СЃР»Рё Р·Р°СЏРІРєР° СѓСЃРїРµР»Р° РёСЃРїРѕР»РЅРёС‚СЊСЃСЏ
               if not bit.test(order.flags, 1) then
                  return true
               else
-                 message('Возникла неизвестная ошибка при снятии ЗАЯВКИ '..tostring(order.order_num))
-                 myLog('Возникла неизвестная ошибка при снятии ЗАЯВКИ '..tostring(order.order_num))
+                 message('Р’РѕР·РЅРёРєР»Р° РЅРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР° РїСЂРё СЃРЅСЏС‚РёРё Р—РђРЇР’РљР '..tostring(order.order_num))
+                 myLog('Р’РѕР·РЅРёРєР»Р° РЅРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР° РїСЂРё СЃРЅСЏС‚РёРё Р—РђРЇР’РљР '..tostring(order.order_num))
                  return false
               end
            end
         end
     else
-        message("Не найдены активные заявки "..TRADE_SEC_CODE)
-        myLog("Не найдены активные заявки "..TRADE_SEC_CODE)
+        message("РќРµ РЅР°Р№РґРµРЅС‹ Р°РєС‚РёРІРЅС‹Рµ Р·Р°СЏРІРєРё "..TRADE_SEC_CODE)
+        myLog("РќРµ РЅР°Р№РґРµРЅС‹ Р°РєС‚РёРІРЅС‹Рµ Р·Р°СЏРІРєРё "..TRADE_SEC_CODE)
     end
 
    return true
 end
 
--- Получение таблицы стоп-ордера по его номеру
--- Возвращает таблицу стоп-зявки или nil
+-- РџРѕР»СѓС‡РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃС‚РѕРї-РѕСЂРґРµСЂР° РїРѕ РµРіРѕ РЅРѕРјРµСЂСѓ
+-- Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ СЃС‚РѕРї-Р·СЏРІРєРё РёР»Рё nil
 function getStopOrderByNumber(stop_order_number,from,to)
     local index_table = SearchItems("stop_orders",
                                             from or 0,
@@ -1219,8 +1219,8 @@ function getStopOrderByNumber(stop_order_number,from,to)
     end
 end
 
--- Получение таблицы стоп-ордера по номеру порожденной им заявки
--- Возвращает таблицу стоп-заявки или nil
+-- РџРѕР»СѓС‡РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ СЃС‚РѕРї-РѕСЂРґРµСЂР° РїРѕ РЅРѕРјРµСЂСѓ РїРѕСЂРѕР¶РґРµРЅРЅРѕР№ РёРј Р·Р°СЏРІРєРё
+-- Р’РѕР·РІСЂР°С‰Р°РµС‚ С‚Р°Р±Р»РёС†Сѓ СЃС‚РѕРї-Р·Р°СЏРІРєРё РёР»Рё nil
 function getStopOrderByOrderNumber(order_number,from,to)
     local index_table = SearchItems("stop_orders",
                                                from or 0,
@@ -1233,17 +1233,17 @@ function getStopOrderByOrderNumber(order_number,from,to)
     end
 end
 -------------------------------------
---Торговля--
+--РўРѕСЂРіРѕРІР»СЏ--
 -------------------------------------
 
 -----------------------------
--- Алгоритм --
+-- РђР»РіРѕСЂРёС‚Рј --
 -----------------------------
 function up_downTest(i, cell, settings, DS, signal)
 
     --local testvalue = tonumber(getParamEx(CLASS_CODE,SEC_CODE,"last").param_value) or 0
     local index = DS:Size()
-	local testvalue = GetCell(t_id, i, tableIndex["Текущая цена"]).value
+	local testvalue = GetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"]).value
     local price_step = tonumber(getParamEx(CLASS_CODE, SEC_CODE, "SEC_PRICE_STEP").param_value) or 0
     local scale = getSecurityInfo(CLASS_CODE, SEC_CODE).scale
     local signaltestvalue1 = calcAlgoValue[index-1] or 0
@@ -1279,42 +1279,42 @@ function up_downTest(i, cell, settings, DS, signal)
         local mes = ""
 
         if signaltestvalue1 < DS:C(index-1) and signaltestvalue2 > DS:C(index-2) then
-            mes = mes0..": Сигнал Buy"
+            mes = mes0..": РЎРёРіРЅР°Р» Buy"
             myLog(mes)
-            --myLog("Значение алгоритма -1 "..tostring(signaltestvalue1).." Закрытие свечи-1 "..DS:C(index-1))
-            --myLog("Значение алгоритма -2 "..tostring(signaltestvalue2).." Закрытие свечи-2 "..DS:C(index-2))
+            --myLog("Р—РЅР°С‡РµРЅРёРµ Р°Р»РіРѕСЂРёС‚РјР° -1 "..tostring(signaltestvalue1).." Р—Р°РєСЂС‹С‚РёРµ СЃРІРµС‡Рё-1 "..DS:C(index-1))
+            --myLog("Р—РЅР°С‡РµРЅРёРµ Р°Р»РіРѕСЂРёС‚РјР° -2 "..tostring(signaltestvalue2).." Р—Р°РєСЂС‹С‚РёРµ СЃРІРµС‡Рё-2 "..DS:C(index-2))
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
         end
         if signaltestvalue1 > DS:C(index-1) and signaltestvalue2 < DS:C(index-2) then
-            mes = mes0..": Сигнал Sell"
+            mes = mes0..": РЎРёРіРЅР°Р» Sell"
             myLog(mes)
-            --myLog("Значение алгоритма -1 "..tostring(signaltestvalue1).." Закрытие свечи-1 "..DS:C(index-1))
-            --myLog("Значение алгоритма -2 "..tostring(signaltestvalue2).." Закрытие свечи-2 "..DS:C(index-2))
+            --myLog("Р—РЅР°С‡РµРЅРёРµ Р°Р»РіРѕСЂРёС‚РјР° -1 "..tostring(signaltestvalue1).." Р—Р°РєСЂС‹С‚РёРµ СЃРІРµС‡Рё-1 "..DS:C(index-1))
+            --myLog("Р—РЅР°С‡РµРЅРёРµ Р°Р»РіРѕСЂРёС‚РјР° -2 "..tostring(signaltestvalue2).." Р—Р°РєСЂС‹С‚РёРµ СЃРІРµС‡Рё-2 "..DS:C(index-2))
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
         end
 
         if testvalue < upTestZone and DS:C(index-1) > upTestZone then
-            mes = mes0..": Цена опустилась к зоне "..tostring(upTestZone)
+            mes = mes0..": Р¦РµРЅР° РѕРїСѓСЃС‚РёР»Р°СЃСЊ Рє Р·РѕРЅРµ "..tostring(upTestZone)
             myLog(mes)
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
         end
         if testvalue > downTestZone and DS:C(index-1) < downTestZone then
-            mes = mes0..": Цена поднялась к зоне "..tostring(downTestZone)
+            mes = mes0..": Р¦РµРЅР° РїРѕРґРЅСЏР»Р°СЃСЊ Рє Р·РѕРЅРµ "..tostring(downTestZone)
             myLog(mes)
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
         end
         if testvalue > upTestZone and DS:C(index-1) < upTestZone then
-            mes = mes0..": Цена оттолкнулась от зоны "..tostring(upTestZone)
+            mes = mes0..": Р¦РµРЅР° РѕС‚С‚РѕР»РєРЅСѓР»Р°СЃСЊ РѕС‚ Р·РѕРЅС‹ "..tostring(upTestZone)
             myLog(mes)
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
         end
         if testvalue < downTestZone and DS:C(index-1) > downTestZone then
-            mes = mes0..": Цена опустилась от зоны "..tostring(downTestZone)
+            mes = mes0..": Р¦РµРЅР° РѕРїСѓСЃС‚РёР»Р°СЃСЊ РѕС‚ Р·РѕРЅС‹ "..tostring(downTestZone)
             myLog(mes)
             if isMessage == 1 then message(mes) end
             if isPlaySound == 1 then PaySoundFile(soundFileName) end
@@ -1346,7 +1346,7 @@ function addDeal(index, ChartId, openLong, openShort, closeLong, closeShort, tim
 
     if openLong ~= nil then
         label.YVALUE = openLong
-        label.IMAGE_PATH = IMAGE_PATH..'МоиСделки_buy.bmp'
+        label.IMAGE_PATH = IMAGE_PATH..'РњРѕРёРЎРґРµР»РєРё_buy.bmp'
         ALIGNMENT = "BOTTOM"
         label.R = 0
         label.G = 0
@@ -1355,7 +1355,7 @@ function addDeal(index, ChartId, openLong, openShort, closeLong, closeShort, tim
         label.HINT = "open Long "..tostring(openLong)
     elseif openShort ~=nil then
         label.YVALUE = openShort
-        label.IMAGE_PATH = IMAGE_PATH..'МоиСделки_sell.bmp'
+        label.IMAGE_PATH = IMAGE_PATH..'РњРѕРёРЎРґРµР»РєРё_sell.bmp'
         label.R = 0
         label.G = 0
         label.B = 0
@@ -1364,7 +1364,7 @@ function addDeal(index, ChartId, openLong, openShort, closeLong, closeShort, tim
         label.HINT = "open Short "..tostring(openShort)
     elseif closeLong ~=nil then
         label.YVALUE = closeLong
-        label.IMAGE_PATH = IMAGE_PATH..'МоиСделки_sell.bmp'
+        label.IMAGE_PATH = IMAGE_PATH..'РњРѕРёРЎРґРµР»РєРё_sell.bmp'
         ALIGNMENT = "TOP"
         label.R = 0
         label.G = 0
@@ -1373,7 +1373,7 @@ function addDeal(index, ChartId, openLong, openShort, closeLong, closeShort, tim
         label.HINT = "close Long "..tostring(closeLong)
     elseif closeShort ~=nil then
         label.YVALUE = closeShort
-        label.IMAGE_PATH = IMAGE_PATH..'МоиСделки_buy.bmp'
+        label.IMAGE_PATH = IMAGE_PATH..'РњРѕРёРЎРґРµР»РєРё_buy.bmp'
         ALIGNMENT = "BOTTOM"
         label.R = 0
         label.G = 0
@@ -1404,7 +1404,7 @@ function getATR(i, dayIntervalIndex)
     local lastATR = round(calcDayATR(dayATR_Period, DS), scale)
     SEC_CODES['dayATR'][i] = lastATR
     --myLog("Day ATR ".. SEC_CODE.." "..tostring(lastATR))
-    SetCell(t_id, i, tableIndex["D ATR"], tostring(lastATR), lastATR)  --i строка, 1 - колонка, v - значение
+    SetCell(t_id, i, tableIndex["D ATR"], tostring(lastATR), lastATR)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
 
     SEC_CODES['D_minus5'][i] = dayDS:C(dayDS:Size()-5)
 
@@ -1451,7 +1451,7 @@ function dValue(i)
 end
 
  -----------------------------
- -- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ --
+ -- Р’РЎРџРћРњРћР“РђРўР•Р›Р¬РќР«Р• Р¤РЈРќРљР¦РР --
  -----------------------------
 function OnDepoLimit(dlimit)
 
@@ -1466,23 +1466,23 @@ function OnDepoLimit(dlimit)
             if lotsize == 0 or lotsize == nil then
                 lotsize = 1
             end
-            SetCell(t_id, i, tableIndex["Позиция"], tostring(dlimit.currentbal/lotsize), dlimit.currentbal/lotsize)  --i строка, 1 - колонка, v - значение
+            SetCell(t_id, i, tableIndex["РџРѕР·РёС†РёСЏ"], tostring(dlimit.currentbal/lotsize), dlimit.currentbal/lotsize)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             local awg_price = GetCorrectPrice(dlimit.awg_position_price, class_code, dlimit.sec_code)
             awg_price = string.gsub(tostring(awg_price),',', '.')
-            local last_price = GetCell(t_id, i, tableIndex["Текущая цена"]).value or 0
+            local last_price = GetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"]).value or 0
             if tonumber(awg_price)==0 then
-                SetCell(t_id, i, tableIndex["Средняя"], '', 0)  --i строка, 1 - колонка, v - значение
-                White(i, tableIndex["Средняя"])
+                SetCell(t_id, i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], '', 0)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+                White(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"])
             else
-                Str(i, tableIndex["Средняя"], tonumber(awg_price), last_price)  --i строка, 1 - колонка, v - значение
+                Str(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], tonumber(awg_price), last_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             end
             if showTradeCommands == true then
                 if dlimit.currentbal~=0 then
-                    Red(i, tableIndex["Команда CLOSE"])
-                    SetCell(t_id, i, tableIndex["Команда CLOSE"], "CLOSE")  --i строка, 0 - колонка, v - значение
+                    Red(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                    SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "CLOSE")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 else
-                    White(i, tableIndex["Команда CLOSE"])
-                    SetCell(t_id, i, tableIndex["Команда CLOSE"], "")  --i строка, 0 - колонка, v - значение
+                    White(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                    SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 end
             end
             break
@@ -1500,23 +1500,23 @@ function OnFuturesClientHolding(fut_limit)
             if lotsize == 0 or lotsize == nil then
                 lotsize = 1
             end
-            SetCell(t_id, i, tableIndex["Позиция"], tostring(fut_limit.totalnet/lotsize), fut_limit.totalnet/lotsize)  --i строка, 1 - колонка, v - значение
+            SetCell(t_id, i, tableIndex["РџРѕР·РёС†РёСЏ"], tostring(fut_limit.totalnet/lotsize), fut_limit.totalnet/lotsize)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             local awg_price = GetCorrectPrice(fut_limit.avrposnprice, class_code, fut_limit.sec_code)
             awg_price = string.gsub(tostring(awg_price),',', '.')
-            local last_price = GetCell(t_id, i, tableIndex["Текущая цена"]).value or 0
+            local last_price = GetCell(t_id, i, tableIndex["РўРµРєСѓС‰Р°СЏ С†РµРЅР°"]).value or 0
             if tonumber(awg_price)==0 then
-                SetCell(t_id, i, tableIndex["Средняя"], '', 0)  --i строка, 1 - колонка, v - значение
-                White(i, tableIndex["Средняя"])
+                SetCell(t_id, i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], '', 0)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
+                White(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"])
             else
-                Str(i, tableIndex["Средняя"], tonumber(awg_price), last_price)  --i строка, 1 - колонка, v - значение
+                Str(i, tableIndex["РЎСЂРµРґРЅСЏСЏ"], tonumber(awg_price), last_price)  --i СЃС‚СЂРѕРєР°, 1 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
             end
             if showTradeCommands == true then
                 if fut_limit.totalnet~=0 then
-                    Red(i, tableIndex["Команда CLOSE"])
-                    SetCell(t_id, i, tableIndex["Команда CLOSE"], "CLOSE")  --i строка, 0 - колонка, v - значение
+                    Red(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                    SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "CLOSE")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 else
-                    White(i, tableIndex["Команда CLOSE"])
-                    SetCell(t_id, i, tableIndex["Команда CLOSE"], "")  --i строка, 0 - колонка, v - значение
+                    White(i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"])
+                    SetCell(t_id, i, tableIndex["РљРѕРјР°РЅРґР° CLOSE"], "")  --i СЃС‚СЂРѕРєР°, 0 - РєРѕР»РѕРЅРєР°, v - Р·РЅР°С‡РµРЅРёРµ
                 end
             end
             break
@@ -1526,7 +1526,7 @@ function OnFuturesClientHolding(fut_limit)
 end
 
 function GetTotalnet(class_code, sec_code)
-    -- ФЬЮЧЕРСЫ, ОПЦИОНЫ
+    -- Р¤Р¬Р®Р§Р•Р РЎР«, РћРџР¦РРћРќР«
     local opencount = 0
     local awg_position_price = 0
 
@@ -1538,7 +1538,7 @@ function GetTotalnet(class_code, sec_code)
              awg_position_price = GetCorrectPrice(futures_client_holding.avrposnprice, class_code, futures_client_holding.sec_code)
           end
        end
-    -- АКЦИИ
+    -- РђРљР¦РР
     elseif class_code == 'TQBR' or class_code == 'QJSIM' then
         local lotsize = tonumber(getParamEx(class_code,sec_code,"lotsize").param_value)
         if lotsize == 0 or lotsize == nil then
@@ -1560,7 +1560,7 @@ function GetTotalnet(class_code, sec_code)
     --myLog("awg_position_price "..tostring(awg_position_price))
     --myLog("sec_code "..sec_code.." class_code "..class_code.." pos: "..tostring(opencount))
 
-    -- Если позиция по инструменту в таблице не найдена, возвращает 0
+    -- Р•СЃР»Рё РїРѕР·РёС†РёСЏ РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ РІ С‚Р°Р±Р»РёС†Рµ РЅРµ РЅР°Р№РґРµРЅР°, РІРѕР·РІСЂР°С‰Р°РµС‚ 0
     return opencount, awg_position_price
 end
 
@@ -1577,13 +1577,13 @@ function mysplit(inputstr, sep)
     return t
 end
 
--- функция записывает в лог строчку с временем и датой
+-- С„СѓРЅРєС†РёСЏ Р·Р°РїРёСЃС‹РІР°РµС‚ РІ Р»РѕРі СЃС‚СЂРѕС‡РєСѓ СЃ РІСЂРµРјРµРЅРµРј Рё РґР°С‚РѕР№
 function myLog(str)
     if logFile==nil then return end
 
-    local current_time=os.time()--tonumber(timeformat(getInfoParam("SERVERTIME"))) -- помещене в переменную времени сервера в формате HHMMSS
-    if (current_time-g_previous_time)>1 then -- если текущая запись произошла позже 1 секунды, чем предыдущая
-        logFile:write("\n") -- добавляем пустую строку для удобства чтения
+    local current_time=os.time()--tonumber(timeformat(getInfoParam("SERVERTIME"))) -- РїРѕРјРµС‰РµРЅРµ РІ РїРµСЂРµРјРµРЅРЅСѓСЋ РІСЂРµРјРµРЅРё СЃРµСЂРІРµСЂР° РІ С„РѕСЂРјР°С‚Рµ HHMMSS
+    if (current_time-g_previous_time)>1 then -- РµСЃР»Рё С‚РµРєСѓС‰Р°СЏ Р·Р°РїРёСЃСЊ РїСЂРѕРёР·РѕС€Р»Р° РїРѕР·Р¶Рµ 1 СЃРµРєСѓРЅРґС‹, С‡РµРј РїСЂРµРґС‹РґСѓС‰Р°СЏ
+        logFile:write("\n") -- РґРѕР±Р°РІР»СЏРµРј РїСѓСЃС‚СѓСЋ СЃС‚СЂРѕРєСѓ РґР»СЏ СѓРґРѕР±СЃС‚РІР° С‡С‚РµРЅРёСЏ
     end
     g_previous_time = current_time
 
@@ -1593,10 +1593,10 @@ function myLog(str)
         logFile:write("======================================================================================================================\n\n")
         logFile:write("======================================================================================================================\n")
     end
-    logFile:flush() -- Сохраняет изменения в файле
+    logFile:flush() -- РЎРѕС…СЂР°РЅСЏРµС‚ РёР·РјРµРЅРµРЅРёСЏ РІ С„Р°Р№Р»Рµ
 end
 
--- удаление точки и нулей после нее
+-- СѓРґР°Р»РµРЅРёРµ С‚РѕС‡РєРё Рё РЅСѓР»РµР№ РїРѕСЃР»Рµ РЅРµРµ
 function removeZero(str)
     while (string.sub(str,-1) == "0" and str ~= "0") do
     str = string.sub(str,1,-2)
@@ -1607,38 +1607,38 @@ function removeZero(str)
     return str
 end
 
--- Получает точность цены по инструменту
+-- РџРѕР»СѓС‡Р°РµС‚ С‚РѕС‡РЅРѕСЃС‚СЊ С†РµРЅС‹ РїРѕ РёРЅСЃС‚СЂСѓРјРµРЅС‚Сѓ
 function GetCorrectPrice(price, TRADE_CLASS_CODE, TRADE_SEC_CODE) -- STRING
 
     local scale = getSecurityInfo(TRADE_CLASS_CODE, TRADE_SEC_CODE).scale
-    -- Получает минимальный шаг цены инструмента
+    -- РџРѕР»СѓС‡Р°РµС‚ РјРёРЅРёРјР°Р»СЊРЅС‹Р№ С€Р°Рі С†РµРЅС‹ РёРЅСЃС‚СЂСѓРјРµРЅС‚Р°
     local PriceStep = tonumber(getParamEx(TRADE_CLASS_CODE, TRADE_SEC_CODE, "SEC_PRICE_STEP").param_value)
-    -- Если после запятой должны быть цифры
+    -- Р•СЃР»Рё РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ С†РёС„СЂС‹
     if scale > 0 then
         price = tostring(price)
-        -- Ищет в числе позицию запятой, или точки
+        -- РС‰РµС‚ РІ С‡РёСЃР»Рµ РїРѕР·РёС†РёСЋ Р·Р°РїСЏС‚РѕР№, РёР»Рё С‚РѕС‡РєРё
         local dot_pos = price:find('.')
         local comma_pos = price:find(',')
-        -- Если передано целое число
+        -- Р•СЃР»Рё РїРµСЂРµРґР°РЅРѕ С†РµР»РѕРµ С‡РёСЃР»Рѕ
         if dot_pos == nil and comma_pos == nil then
-            -- Добавляет к числу ',' и необходимое количество нулей и возвращает результат
+            -- Р”РѕР±Р°РІР»СЏРµС‚ Рє С‡РёСЃР»Сѓ ',' Рё РЅРµРѕР±С…РѕРґРёРјРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅСѓР»РµР№ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СЂРµР·СѓР»СЊС‚Р°С‚
             price = price..','
             for i=1,scale do price = price..'0' end
             return price
-        else -- передано вещественное число
-            -- Если нужно, заменяет запятую на точку
+        else -- РїРµСЂРµРґР°РЅРѕ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ
+            -- Р•СЃР»Рё РЅСѓР¶РЅРѕ, Р·Р°РјРµРЅСЏРµС‚ Р·Р°РїСЏС‚СѓСЋ РЅР° С‚РѕС‡РєСѓ
             if comma_pos ~= nil then price:gsub(',', '.') end
-            -- Округляет число до необходимого количества знаков после запятой
+            -- РћРєСЂСѓРіР»СЏРµС‚ С‡РёСЃР»Рѕ РґРѕ РЅРµРѕР±С…РѕРґРёРјРѕРіРѕ РєРѕР»РёС‡РµСЃС‚РІР° Р·РЅР°РєРѕРІ РїРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№
             price = round(tonumber(price), scale)
             --message(TRADE_SEC_CODE.." price step "..PriceStep.." scale: "..tostring(scale).." price old: "..tostring(price))
-            -- Корректирует на соответствие шагу цены
+            -- РљРѕСЂСЂРµРєС‚РёСЂСѓРµС‚ РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С€Р°РіСѓ С†РµРЅС‹
             price = price - price % PriceStep
             --message("price new: "..tostring(price))
             --price = string.gsub(tostring(price),'[\.]+', ',')
             return price
         end
-    else -- После запятой не должно быть цифр
-        -- Корректирует на соответствие шагу цены
+    else -- РџРѕСЃР»Рµ Р·Р°РїСЏС‚РѕР№ РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ С†РёС„СЂ
+        -- РљРѕСЂСЂРµРєС‚РёСЂСѓРµС‚ РЅР° СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРµ С€Р°РіСѓ С†РµРЅС‹
         price = price - price % PriceStep
         return tostring(math.floor(price))
     end
@@ -1672,7 +1672,7 @@ end
 
 function toYYYYMMDDHHMMSS(datetime)
     if type(datetime) ~= "table" then
-       --message("в функции toYYYYMMDDHHMMSS неверно задан параметр: datetime="..tostring(datetime))
+       --message("РІ С„СѓРЅРєС†РёРё toYYYYMMDDHHMMSS РЅРµРІРµСЂРЅРѕ Р·Р°РґР°РЅ РїР°СЂР°РјРµС‚СЂ: datetime="..tostring(datetime))
        return ""
     else
        local Res = tostring(datetime.year)
